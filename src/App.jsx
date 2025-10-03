@@ -15,7 +15,7 @@ const huomio = () => {
 
   return (
     <div className="App">
-        <h1>Hello from React!</h1>
+        <h1>Hello from React! Now Deployed!</h1>
 
         <Posts />
 
