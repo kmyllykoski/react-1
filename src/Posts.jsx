@@ -1,5 +1,6 @@
 import './App.css'
 import React, {useState, useEffect} from 'react'
+import CustomerService from './services/Customer'
 
 const Posts = () => {
 
@@ -8,9 +9,10 @@ const [posts, setPosts] = useState([])
 const [showPosts, setShowPosts] = useState(false)
 
 useEffect(() => {
-  fetch("https://jsonplaceholder.typicode.com/posts")
-  .then(res => res.json()) //muutetaan json data javascriptiksi
-  .then(oliot => setPosts(oliot))
+  CustomerService.getPosts()
+    .then(posts => {
+      setPosts(posts)
+    })
 },[]
 )
 
