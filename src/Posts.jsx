@@ -1,6 +1,6 @@
 import './App.css'
 import React, {useState, useEffect} from 'react'
-import CustomerService from './services/Customer'
+import CustomerService from './services/Viestit'
 
 const Posts = () => {
 
