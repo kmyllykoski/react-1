@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import CustomerService from './services/Customers'
 
 // Propsina asiakasobjekti
-const Customer = ({customer, customers, setMessageText, setShowMessage, setIsPositiveMessage, setCustomers}) => {
+const Customer = ({customer, customers, editCustomer, setMessageText, setShowMessage, setIsPositiveMessage, setCustomers}) => {
 
 // Komponentin tilan määritys
 const [showDetails, setShowDetails] = useState(false)
@@ -19,6 +19,8 @@ const handleDelete = (customer) => {
             setIsPositiveMessage(true);
             setMessageText(`Customer deleted: ${customer.companyName} with response status: ${response.status}`);
             setShowMessage(true);
+            // Scroll to top to see the message
+            window.scrollTo(0, 0);
             setTimeout(() => {
                 setShowMessage(false);
                 setCustomers(customers.filter(c => c.customerId !== customer.customerId));
@@ -43,6 +45,8 @@ const handleDelete = (customer) => {
 
         setMessageText(`Failed to delete customer ${customer.companyName}: ${serverMsg}`);
         setShowMessage(true);
+        // Scroll to top to see the message
+        window.scrollTo(0, 0);
         setTimeout(() => {
             setShowMessage(false);
         }, 7000);
@@ -53,9 +57,11 @@ const handleDelete = (customer) => {
         setIsPositiveMessage(false);
         setMessageText(`Deletion cancelled for customer ${customer.companyName}.`);
         setShowMessage(true);
+        // Scroll to top to see the message
+        window.scrollTo(0, 0);
         setTimeout(() => {
             setShowMessage(false);
-        }, 5000);
+        }, 7000);
     }
 }
 
@@ -67,7 +73,7 @@ const handleDelete = (customer) => {
           <div className='customerDetails'>
             <h3>{customer.companyName}</h3>
             <button className='buttondelete' onClick={() => handleDelete(customer)}>Delete</button>
-            <button className='buttonedit' onClick={() => alert(`Editing customer: ${customer.companyName}`)}>Edit</button>
+            <button className='buttonedit' onClick={() => editCustomer(customer)}>Edit</button>
             <button className='buttonclose' onClick={() => setShowDetails(false)}>Close</button>
             <table>
                 <thead>

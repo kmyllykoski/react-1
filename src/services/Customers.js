@@ -20,4 +20,9 @@ export const remove = async (customerId) => {
   return response;
 };
 
-export default { getCustomers, create, remove };
+export const update = async (updatedCustomer) => {
+  const response = await instance.put(`/Customers/${updatedCustomer.customerId}`, updatedCustomer);
+  return response.data;
+};
+
+export default { getCustomers, create, remove, update };

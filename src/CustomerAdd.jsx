@@ -95,7 +95,7 @@ const CustomerAdd = ({setAddCustomer, setIsPositiveMessage, setShowMessage, setM
     const [newFax, setNewFax] = useState('');
 
     return (
-        <div className='customerAddDiv'>
+        <div className='customerFormDiv'>
         <h3>Add New Customer</h3>
 
         <form onSubmit={handleSubmit}>
