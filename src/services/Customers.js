@@ -14,4 +14,10 @@ export const create = async (newCustomer) => {
   return response.data;
 };
 
-export default { getCustomers, create };
+export const remove = async (customerId) => {
+  const response = await instance.delete(`/Customers/${customerId}`);
+  console.log('Axios Delete response:', response);
+  return response;
+};
+
+export default { getCustomers, create, remove };

@@ -93,3 +93,29 @@
   color: white;
   cursor: pointer;
 }
+
+.negative {
+  background-color: #f44336; /* Red */
+  color: white;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #f44336;
+  font-size: 1rem;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  margin: 10%;
+}
+
+.positive {
+  background-color: #4CAF50; /* Green */
+  color: white;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #4CAF50;
+  font-size: 1rem;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  margin: 10%;
+}

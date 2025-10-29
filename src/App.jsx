@@ -4,11 +4,17 @@ import Laskuri from './Laskuri'
 import Viesti from './Viesti'
 import Posts from './Posts'
 import CustomerList from './CustomerList'
+import Message from './Message'
 
 const App = () => {
 
-// App komponentin tila
+// App komponentin tilamääritykset
+// Laskuri 
 const [showLaskuri, setShowLaskuri] = useState(false)
+// Message
+const [showMessage, setShowMessage] = useState(false)
+const [messageText, setMessageText] = useState("")
+const [isPositiveMessage, setIsPositiveMessage] = useState(true)
 
 const huomio = () => {
   alert("Huomio!")
@@ -18,9 +24,13 @@ const huomio = () => {
     <div className="App">
         <h1>Hello from React! -  Deployed!</h1>
 
+        { showMessage && (
+          <Message message={messageText} isPositive={isPositiveMessage} />
+        )}
+
         <Posts />
 
-        <CustomerList />
+        <CustomerList setIsPositiveMessage={setIsPositiveMessage} setShowMessage={setShowMessage} setMessageText={setMessageText} />
 
         {showLaskuri && <Laskuri huomio={huomio} />}
 

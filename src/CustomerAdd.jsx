@@ -40,7 +40,7 @@ public partial class Customer
     public string? Fax { get; set; }
 */
 
-const CustomerAdd = ({setAddCustomer}) => {
+const CustomerAdd = ({setAddCustomer, setIsPositiveMessage, setShowMessage, setMessageText}) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -60,16 +60,27 @@ const CustomerAdd = ({setAddCustomer}) => {
         
         CustomerService.create(newCustomer)
         .then(response => {
-        console.log('Customer added:', response);
-        alert(`Customer added: ${newCustomer.customerId}`);
-        setAddCustomer(false);
-        })
+            console.log('Customer added:', response);
+            // alert(`Customer added: ${newCustomer.customerId}`);
+            setIsPositiveMessage(true);
+            setMessageText(`Customer added: ${newCustomer.customerId}`);
+            setShowMessage(true);
+            setTimeout(() => {
+                setShowMessage(false);
+            }, 5000);
+            setAddCustomer(false);
+            })
+            
         .catch(error => {
-        console.error('Error adding customer:', error);
-        alert('Failed to add customer.');
-        });
-    }
-    
+            console.error('Error adding customer:', error);
+            setIsPositiveMessage(false);
+            setMessageText(`Failed to add customer ${newCustomer.customerId}.`);
+            setShowMessage(true);
+            setTimeout(() => {
+                setShowMessage(false);
+            }, 7000);
+            });
+        }
     // Komponentin tilan määritys
     const [newCustomerId, setNewCustomerId] = useState('');
     const [newCompanyName, setNewCompanyName] = useState('');
