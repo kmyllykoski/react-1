@@ -27,9 +27,6 @@ const handleDelete = (customer) => {
             }, 7000);
         }
         // alert(`Customer deleted: ${customer.companyName} with response status: ${response.status}`);
-        // Update customer list in parent component
-        // You might need to lift the state up or use a state management solution
-        
         })
     .catch(error => {
         console.error('Error deleting customer:', error);
