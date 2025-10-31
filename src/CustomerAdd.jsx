@@ -40,7 +40,7 @@ public partial class Customer
     public string? Fax { get; set; }
 */
 
-const CustomerAdd = ({setAddCustomer, setIsPositiveMessage, setShowMessage, setMessageText}) => {
+const CustomerAdd = ({setAddCustomer, setIsPositiveMessage, setShowMessage, setMessageText, setShowCustomers, setDetailCustomer}) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -67,8 +67,10 @@ const CustomerAdd = ({setAddCustomer, setIsPositiveMessage, setShowMessage, setM
             setShowMessage(true);
             setTimeout(() => {
                 setShowMessage(false);
+                setShowCustomers(true);
             }, 5000);
             setAddCustomer(false);
+            setDetailCustomer("");   
             })
             
         .catch(error => {
@@ -152,7 +154,7 @@ const CustomerAdd = ({setAddCustomer, setIsPositiveMessage, setShowMessage, setM
                 <input type="text" value={newFax} onChange={(e) => setNewFax(e.target.value)} placeholder="Fax" /><br />
             </div>
             <button type="submit" className='button'>Add Customer</button>
-            <button type="button" className='button' onClick={() => setAddCustomer(false)}>Cancel</button>
+            <button type="button" className='button' onClick={() => {setAddCustomer(false); setDetailCustomer(null); setShowCustomers(true);}}>Cancel</button>
         </form>
         </div>
     )
