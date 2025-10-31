@@ -13,14 +13,15 @@ const [showCustomers, setShowCustomers] = useState(false)
 const [addCustomer, setAddCustomer] = useState(false)
 const [editMode, setEditMode] = useState(false)
 const [customerToEdit, setCustomerToEdit] = useState(null)
-const [reloadCustomers, setReloadCustomers] = useState(false)
+// const [reloadCustomers, setReloadCustomers] = useState(false)
+const [detailCustomer, setDetailCustomer] = useState(null)
 
 useEffect(() => {
   CustomerService.getCustomers()
     .then(customers => {
       setCustomers(customers)
     })
-},[addCustomer, reloadCustomers]
+},[addCustomer]
 )
 
 const editCustomer = (customer) => {
@@ -34,14 +35,17 @@ const editCustomer = (customer) => {
 
         {!addCustomer && <button className='button' onClick={() => setAddCustomer(true)}>Add Customer</button> }</h2>
 
-        {addCustomer && <CustomerAdd setAddCustomer={setAddCustomer} setIsPositiveMessage={setIsPositiveMessage} setShowMessage={setShowMessage} setMessageText={setMessageText} />}
+        {addCustomer && <CustomerAdd setAddCustomer={setAddCustomer} setIsPositiveMessage={setIsPositiveMessage} 
+        setShowMessage={setShowMessage} setMessageText={setMessageText} />}
 
         {editMode && <CustomerEdit setEditMode={setEditMode} setIsPositiveMessage={setIsPositiveMessage} setShowMessage={setShowMessage}
          setMessageText={setMessageText} customerToEdit={customerToEdit} customers={customers} setCustomers={setCustomers} />}
 
         {showCustomers && customers && customers.map(c =>
 
-           <Customer key={c.customerId} customer={c} editCustomer={editCustomer} customers={customers} setMessageText={setMessageText} setShowMessage={setShowMessage} setIsPositiveMessage={setIsPositiveMessage} setCustomers={setCustomers} />
+           <Customer key={c.customerId} customer={c} editCustomer={editCustomer} customers={customers} setMessageText={setMessageText} 
+           setShowMessage={setShowMessage} setIsPositiveMessage={setIsPositiveMessage} setCustomers={setCustomers}
+           detailCustomer={detailCustomer} setDetailCustomer={setDetailCustomer} />
         )
         }
 

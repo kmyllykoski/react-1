@@ -3,10 +3,10 @@ import React, { useState } from 'react'
 import CustomerService from './services/Customers'
 
 // Propsina asiakasobjekti
-const Customer = ({customer, customers, editCustomer, setMessageText, setShowMessage, setIsPositiveMessage, setCustomers}) => {
+const Customer = ({customer, customers, editCustomer, setMessageText, setShowMessage, setIsPositiveMessage, setCustomers, detailCustomer, setDetailCustomer}) => {
 
 // Komponentin tilan määritys
-const [showDetails, setShowDetails] = useState(false)
+// const [showDetails, setShowDetails] = useState(false)
 
 const handleDelete = (customer) => {
     if (window.confirm(`Are you sure you want to delete customer: ${customer.companyName}?`)) {
@@ -64,14 +64,14 @@ const handleDelete = (customer) => {
 
   return (
     <div className='customerDiv'>
-        <h4 onClick={() => setShowDetails(!showDetails)}>{customer.companyName}</h4>
+        {detailCustomer !== customer.customerId && <h4 onClick={() => setDetailCustomer(customer.customerId)}>{customer.companyName}</h4>}
 
-        {showDetails && 
+        {detailCustomer === customer.customerId && 
           <div className='customerDetails'>
             <h3>{customer.companyName}</h3>
             <button className='buttondelete' onClick={() => handleDelete(customer)}>Delete</button>
             <button className='buttonedit' onClick={() => editCustomer(customer)}>Edit</button>
-            <button className='buttonclose' onClick={() => setShowDetails(false)}>Close</button>
+            <button className='buttonclose' onClick={() => setDetailCustomer(null)}>Close</button>
             <table>
                 <thead>
                     <tr>
