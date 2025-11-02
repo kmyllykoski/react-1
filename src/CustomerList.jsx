@@ -15,6 +15,7 @@ const [editMode, setEditMode] = useState(false)
 const [customerToEdit, setCustomerToEdit] = useState(null)
 // const [reloadCustomers, setReloadCustomers] = useState(false)
 const [detailCustomer, setDetailCustomer] = useState(null)
+const [search, setSearch] = useState("")
 
 useEffect(() => {
   CustomerService.getCustomers()
@@ -30,26 +31,49 @@ const editCustomer = (customer) => {
     setDetailCustomer("");
 }
 
+const handleSearchChange = (e) => {
+  setSearch(e.target.value);           // keep raw value in state
+  setShowCustomers(true);
+}
+
+// safe filtered array (always returns all customers when search empty/whitespace)
+const filteredCustomers = (customers || []).filter(c => {
+  const name = (c?.companyName || '').toLowerCase();
+  const q = (search || '').trim().toLowerCase();
+  return q === '' || name.includes(q);
+});
+
   return (
     <>
-        <h2 onClick={() => setShowCustomers(!showCustomers)}>Customers from MSSQLExpress with Axios
+        <h2 onClick={() => setShowCustomers(!showCustomers)}>
+          Customers from MSSQLExpress with Axios
+          <span className='customer-count'> (Count: {filteredCustomers.length})</span>
+          <button className='button' onClick={() => setShowCustomers(!showCustomers)}> {showCustomers ? 'Hide' : 'Show'} Customers</button>
 
-        {!addCustomer && !editMode && <button className='button' onClick={() => setAddCustomer(true)}>Add Customer</button> }</h2>
-
+          {!addCustomer && !editMode && <button className='button' onClick={() => setAddCustomer(true)}>Add Customer</button> }
+        </h2>
+        {!addCustomer && !editMode &&
+            <input
+              type="text"
+              placeholder="Search customers by name..."
+              value={search}
+              onChange={handleSearchChange}
+              onFocus={() => setShowCustomers(true)}   /* show list on focus only */
+              onClick={(e) => e.stopPropagation()}     /* prevent header click from toggling list */
+              style={{marginLeft: '20px'}}
+            />
+          }
         {addCustomer && <CustomerAdd setAddCustomer={setAddCustomer} setIsPositiveMessage={setIsPositiveMessage} 
         setShowMessage={setShowMessage} setMessageText={setMessageText} setShowCustomers={setShowCustomers} setDetailCustomer={setDetailCustomer} />}
 
         {editMode && <CustomerEdit setEditMode={setEditMode} setIsPositiveMessage={setIsPositiveMessage} setShowMessage={setShowMessage}
          setMessageText={setMessageText} customerToEdit={customerToEdit} customers={customers} setCustomers={setCustomers} />}
 
-        {showCustomers && !editMode && !addCustomer && customers && customers.map(c =>
-
-           <Customer key={c.customerId} customer={c} editCustomer={editCustomer} customers={customers} setMessageText={setMessageText} 
+        {showCustomers && !editMode && !addCustomer && filteredCustomers.map(c =>
+           <Customer key={c.customerId} customer={c} editCustomer={editCustomer} customers={customers} setMessageText={setMessageText}
            setShowMessage={setShowMessage} setIsPositiveMessage={setIsPositiveMessage} setCustomers={setCustomers}
            detailCustomer={detailCustomer} setDetailCustomer={setDetailCustomer} />
-        )
-        }
-
+        )}
     </>
   )
 }
