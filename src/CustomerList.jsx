@@ -45,24 +45,43 @@ const filteredCustomers = (customers || []).filter(c => {
 
   return (
     <>
-        <h2 onClick={() => setShowCustomers(!showCustomers)}>
+        <h4>
           Customers from MSSQLExpress with Axios
           <span className='customer-count'> (Count: {filteredCustomers.length})</span>
-          <button className='button' onClick={() => setShowCustomers(!showCustomers)}> {showCustomers ? 'Hide' : 'Show'} Customers</button>
+        </h4>
+        
+        <div className="controls">
+            <button
+            className='btn btn-outline-primary btn-sm btn-toggle'
+            onClick={(e) => { e.stopPropagation(); setShowCustomers(!showCustomers); }}
+            >
+            {showCustomers ? 'Hide' : 'Show'} Customers
+            </button>
 
-          {!addCustomer && !editMode && <button className='button' onClick={() => setAddCustomer(true)}>Add Customer</button> }
-        </h2>
-        {!addCustomer && !editMode &&
-            <input
-              type="text"
-              placeholder="Search customers by name..."
-              value={search}
-              onChange={handleSearchChange}
-              onFocus={() => setShowCustomers(true)}   /* show list on focus only */
-              onClick={(e) => e.stopPropagation()}     /* prevent header click from toggling list */
-              style={{marginLeft: '20px'}}
-            />
-          }
+            {!addCustomer && !editMode &&
+            <button
+                className='btn btn-success btn-sm'
+                onClick={(e) => { e.stopPropagation(); setAddCustomer(true); }}
+            >
+                Add Customer
+            </button>
+            }
+        </div>
+        
+        <div className="controls">
+            {!addCustomer && !editMode &&
+                <input
+                type="text"
+                className="search-input"
+                placeholder="Search customers by name..."
+                value={search}
+                onChange={handleSearchChange}
+                onFocus={() => setShowCustomers(true)}   /* show list on focus only */
+                onClick={(e) => e.stopPropagation()}     /* prevent header click from toggling list */
+                />
+            }
+        </div>
+
         {addCustomer && <CustomerAdd setAddCustomer={setAddCustomer} setIsPositiveMessage={setIsPositiveMessage} 
         setShowMessage={setShowMessage} setMessageText={setMessageText} setShowCustomers={setShowCustomers} setDetailCustomer={setDetailCustomer} />}
 

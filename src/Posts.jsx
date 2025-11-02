@@ -2,7 +2,7 @@ import './App.css'
 import React, {useState, useEffect} from 'react'
 import CustomerService from './services/Viestit'
 
-const Posts = () => {
+const Posts = ({ info }) => {
 
 // Komponentin tilan määritys
 const [posts, setPosts] = useState([])
@@ -17,10 +17,9 @@ useEffect(() => {
 )
 
   return (
-    <>
-        <h2 onClick={() => setShowPosts(!showPosts)}>Posts from typicode</h2>
+    <>  <h2>{info}</h2>
 
-        {showPosts && posts && posts.map(p =>
+        {posts.map(p =>
 
             <div className='posts' key={p.id}>
 

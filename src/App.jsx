@@ -6,6 +6,12 @@ import Posts from './Posts'
 import CustomerList from './CustomerList'
 import Message from './Message'
 
+import { Navbar } from 'react-bootstrap'
+import Nav from 'react-bootstrap/Nav'
+import 'bootstrap/dist/css/bootstrap.min.css'
+
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+
 const App = () => {
 
 // App komponentin tilamääritykset
@@ -22,25 +28,48 @@ const huomio = () => {
 
   return (
     <div className="App">
-        <h1>Hello from React! -  Deployed!</h1>
+      <Router>
+        <Navbar bg="dark" variant="dark">
+          <Navbar.Brand href="/">NWApp</Navbar.Brand>
+          <Nav className="mr-auto">
+            <Nav.Link href="/customers">Customers</Nav.Link>
+            <Nav.Link href="/posts">Posts</Nav.Link>
+            <Nav.Link href="/users">Users</Nav.Link>
+            <Nav.Link href="/laskuri">Laskuri</Nav.Link>
+          </Nav>
+        </Navbar>
 
         { showMessage && (
           <Message message={messageText} isPositive={isPositiveMessage} />
         )}
 
-        <Posts />
+        <Routes>
+          <Route path="/" element={
+            <div style={{ padding: '1rem' }}>
+              <h2>Welcome to Northwind Corporation</h2>
+              <h3>Use the menu to view customers, posts and tools.</h3>
+            </div>
+          } />
 
-        <CustomerList setIsPositiveMessage={setIsPositiveMessage} setShowMessage={setShowMessage} setMessageText={setMessageText} />
+          <Route path="/customers" element={
+            <CustomerList setIsPositiveMessage={setIsPositiveMessage} setShowMessage={setShowMessage} setMessageText={setMessageText} />
+          } />
 
-        {showLaskuri && <Laskuri huomio={huomio} />}
+          {/* <Route path="/users" element={
+            <UserList setIsPositiveMessage={setIsPositiveMessage} setShowMessage={setShowMessage} setMessageText={setMessageText} />
+          } /> */}
+          
+          <Route path="/posts" element={
+            <Posts info="Select social media posts from Northwind customers." />
+          } />
 
-        {showLaskuri && <button onClick={() => setShowLaskuri(!showLaskuri)}>Piilota laskuri</button>}
+          <Route path="/laskuri" element={
+            <Laskuri />
+          } />      
 
-        {!showLaskuri && <button onClick={() => setShowLaskuri(!showLaskuri)}>Näytä laskuri</button>}
+        </Routes>
 
-
-        <Viesti teksti="tervehdys app komponentista" />
-        
+      </Router>  
     </div>
   )
 }

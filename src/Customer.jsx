@@ -69,9 +69,11 @@ const handleDelete = (customer) => {
         {detailCustomer === customer.customerId && 
           <div className='customerDetails'>
             <h3>{customer.companyName}</h3>
+            <div className='buttonRow'>
             <button className='buttondelete' onClick={() => handleDelete(customer)}>Delete</button>
             <button className='buttonedit' onClick={() => editCustomer(customer)}>Edit</button>
             <button className='buttonclose' onClick={() => setDetailCustomer(null)}>Close</button>
+            </div>
             <table>
                 <thead>
                     <tr>
