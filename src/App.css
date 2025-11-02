@@ -285,3 +285,19 @@
 .customerDiv h4 {
   margin: 2rem 0; /* 2rem top and bottom — adjust as needed */
 }
+
+/* make all .btn-eq buttons the same size and center their content */
+.btn-eq {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.2rem;       /* match the current + button width; adjust if needed */
+  height: 2.2rem;      /* ensure consistent height */
+  padding: 0;          /* center content exactly */
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+
+.navbar-brand {
+  margin-left: 0.5rem; /* add a little space to the left */
+}

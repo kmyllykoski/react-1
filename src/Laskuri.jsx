@@ -9,11 +9,13 @@ const [luku, setLuku] = useState(0)
 
   return (
     <>
-        <h3>{luku}</h3>
+        <h4 className="mb-3 text-center">{luku}</h4>
 
-        <button onClick={() => setLuku(luku + 1)}>+</button>
-        <button onClick={() => setLuku(luku - 1)}>-</button>
-        <button onClick={() => setLuku(0)}>Reset</button>
+        <div className="d-flex gap-2 justify-content-center">
+          <button type="button" className="btn btn-success btn-eq" onClick={() => setLuku(luku + 1)}>+</button>
+          <button type="button" className="btn btn-danger btn-eq" onClick={() => setLuku(luku - 1)}>-</button>
+          <button type="button" className="btn btn-secondary" onClick={() => setLuku(0)}>Reset</button>
+        </div>
 
     </>
   )

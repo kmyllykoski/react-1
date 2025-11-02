@@ -17,7 +17,7 @@ useEffect(() => {
 )
 
   return (
-    <>  <h2>{info}</h2>
+    <>  <h4>{info}</h4>
 
         {posts.map(p =>
 
