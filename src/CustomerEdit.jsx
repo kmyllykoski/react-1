@@ -61,8 +61,6 @@ const CustomerEdit = ({setEditMode, setIsPositiveMessage, setShowMessage, setMes
         CustomerService.update(updatedCustomer)
         .then(response => {
             console.log('Customer updated:', response);
-            // alert(`Customer added: ${newCustomer.customerId}`);
-            // update customer list in parent component
             setCustomers(customers.map(c => c.customerId === updatedCustomer.customerId ? updatedCustomer : c));
 
             setIsPositiveMessage(true);
@@ -102,59 +100,101 @@ const CustomerEdit = ({setEditMode, setIsPositiveMessage, setShowMessage, setMes
         <h3>Edit Customer</h3>
 
         <form onSubmit={handleSubmit}>
-            <div>
-                <input type="text" value={updatedCustomerId} disabled /><br />
-            </div>
-            <div>
-                <input type="text" value={updatedCompanyName} onChange={(e) => setUpdatedCompanyName(e.target.value)} placeholder="Company Name" /><br />
-            </div>
-            <div>
-                <input type="text" value={updatedContactName} onChange={(e) => setUpdatedContactName(e.target.value)} placeholder="Contact Name" /><br />
-            </div>
-            <div>
-            <input type="text" value={updatedContactTitle} onChange={(e) => setUpdatedContactTitle(e.target.value)} placeholder="Contact Title" /><br />
-            </div>
-            <div>
-                <input type="text" value={updatedAddress} onChange={(e) => setUpdatedAddress(e.target.value)} placeholder="Address" /><br />
-            </div>
-            <div>
-                <input type="text" value={updatedCity} onChange={(e) => setUpdatedCity(e.target.value)} placeholder="City" /><br />
-            </div>
-            <div>
-                <input type="text" value={updatedRegion} onChange={(e) => setUpdatedRegion(e.target.value)} placeholder="Region" /><br />
-            </div>
-            <div>
-                <input type="text" value={updatedPostalCode} onChange={(e) => setUpdatedPostalCode(e.target.value)} placeholder="Postal Code" /><br />
-            </div>
-            <div>
-                <input type="text" value={updatedCountry} onChange={(e) => setUpdatedCountry(e.target.value)} placeholder="Country" /><br />
-            </div>
-            <div>
-                <input type="text" value={updatedPhone} onChange={(e) => setUpdatedPhone(e.target.value)} placeholder="Phone" /><br />
-            </div>
-            <div>
-                <input type="text" value={updatedFax} onChange={(e) => setUpdatedFax(e.target.value)} placeholder="Fax" /><br />
-            </div>
-            <div>
-                <input type="text" value={updatedCity} onChange={(e) => setUpdatedCity(e.target.value)} placeholder="City" /><br />
-            </div>
-            <div>
-                <input type="text" value={updatedRegion} onChange={(e) => setUpdatedRegion(e.target.value)} placeholder="Region" /><br />
-            </div>
-            <div>
-                <input type="text" value={updatedPostalCode} onChange={(e) => setUpdatedPostalCode(e.target.value)} placeholder="Postal Code" /><br />
-            </div>
-            <div>
-                <input type="text" value={updatedCountry} onChange={(e) => setUpdatedCountry(e.target.value)} placeholder="Country" /><br />
-            </div>
-            <div>
-                <input type="text" value={updatedPhone} onChange={(e) => setUpdatedPhone(e.target.value)} placeholder="Phone" /><br />
-            </div>
-            <div>
-                <input type="text" value={updatedFax} onChange={(e) => setUpdatedFax(e.target.value)} placeholder="Fax" /><br />
-            </div>
+          <table className="customer-form-table">
+            <tbody>
+              <tr>
+                <th><label htmlFor="customerId">ID</label></th>
+                <td>
+                  <input id="customerId" type="text" value={updatedCustomerId} disabled />
+                </td>
+              </tr>
+
+              <tr>
+                <th><label htmlFor="companyName">Company</label></th>
+                <td>
+                  <input id="companyName" type="text" value={updatedCompanyName}
+                    onChange={(e) => setUpdatedCompanyName(e.target.value)} placeholder="Company Name" />
+                </td>
+              </tr>
+
+              <tr>
+                <th><label htmlFor="contactName">Contact</label></th>
+                <td>
+                  <input id="contactName" type="text" value={updatedContactName}
+                    onChange={(e) => setUpdatedContactName(e.target.value)} placeholder="Contact Name" />
+                </td>
+              </tr>
+
+              <tr>
+                <th><label htmlFor="contactTitle">Title</label></th>
+                <td>
+                  <input id="contactTitle" type="text" value={updatedContactTitle}
+                    onChange={(e) => setUpdatedContactTitle(e.target.value)} placeholder="Contact Title" />
+                </td>
+              </tr>
+
+              <tr>
+                <th><label htmlFor="address">Address</label></th>
+                <td>
+                  <input id="address" type="text" value={updatedAddress}
+                    onChange={(e) => setUpdatedAddress(e.target.value)} placeholder="Address" />
+                </td>
+              </tr>
+
+              <tr>
+                <th><label htmlFor="city">City</label></th>
+                <td>
+                  <input id="city" type="text" value={updatedCity}
+                    onChange={(e) => setUpdatedCity(e.target.value)} placeholder="City" />
+                </td>
+              </tr>
+
+              <tr>
+                <th><label htmlFor="region">Region</label></th>
+                <td>
+                  <input id="region" type="text" value={updatedRegion}
+                    onChange={(e) => setUpdatedRegion(e.target.value)} placeholder="Region" />
+                </td>
+              </tr>
+
+              <tr>
+                <th><label htmlFor="postalCode">Postal Code</label></th>
+                <td>
+                  <input id="postalCode" type="text" value={updatedPostalCode}
+                    onChange={(e) => setUpdatedPostalCode(e.target.value)} placeholder="Postal Code" />
+                </td>
+              </tr>
+
+              <tr>
+                <th><label htmlFor="country">Country</label></th>
+                <td>
+                  <input id="country" type="text" value={updatedCountry}
+                    onChange={(e) => setUpdatedCountry(e.target.value)} placeholder="Country" />
+                </td>
+              </tr>
+
+              <tr>
+                <th><label htmlFor="phone">Phone</label></th>
+                <td>
+                  <input id="phone" type="text" value={updatedPhone}
+                    onChange={(e) => setUpdatedPhone(e.target.value)} placeholder="Phone" />
+                </td>
+              </tr>
+
+              <tr>
+                <th><label htmlFor="fax">Fax</label></th>
+                <td>
+                  <input id="fax" type="text" value={updatedFax}
+                    onChange={(e) => setUpdatedFax(e.target.value)} placeholder="Fax" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div className="form-buttons">
             <button type="submit" className='button'>Save Customer</button>
             <button type="button" className='button' onClick={() => setEditMode(false)}>Cancel</button>
+          </div>
         </form>
         </div>
     )

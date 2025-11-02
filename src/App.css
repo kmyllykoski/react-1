@@ -121,12 +121,28 @@
 }
 
 .customerFormDiv {
-  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* center vertically */
+  align-items: center;     /* center horizontally */
+  min-height: 30vh;        /* adjust as needed; makes vertical centering visible */
+  width: 100%;
+  box-sizing: border-box;
   padding: 1rem;
-  border-radius: 10px;
-  border-width: 1px;
-  border-style: solid;
-  border-color: rgb(24, 9, 49);
-  background-color: #f1f1f1;
-  width: 50%;
+}
+
+/* Keep table a reasonable width and centered */
+.customer-form-table {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;          /* ensure table is horizontally centered */
+  border-collapse: collapse;
+}
+
+/* Ensure inputs fill their cells */
+.customer-form-table input,
+.customer-form-table textarea,
+.customer-form-table select {
+  width: 100%;
+  box-sizing: border-box;
 }
