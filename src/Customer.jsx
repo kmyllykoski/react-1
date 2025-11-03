@@ -1,6 +1,6 @@
 import './App.css'
 import React, { useState } from 'react'
-import CustomerService from './services/Customers'
+import CustomerService from './services/AxCustomers'
 
 // Propsina asiakasobjekti
 const Customer = ({customer, customers, editCustomer, setMessageText, setShowMessage, setIsPositiveMessage, setCustomers, detailCustomer, setDetailCustomer}) => {

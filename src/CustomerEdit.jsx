@@ -1,6 +1,6 @@
 import './App.css'
 import React, { useState } from 'react'
-import CustomerService from './services/Customers'
+import CustomerService from './services/AxCustomers'
 
 /* 
 public partial class Customer
