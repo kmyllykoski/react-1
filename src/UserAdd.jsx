@@ -37,7 +37,7 @@ const UserAdd = ({setAddUser, setIsPositiveMessage, setShowMessage, setMessageTe
         email: newEmail,
         username: newUsername,
         password: newPassword,
-        accesslevelId: newAccessLevelId
+        accesslevelId: newAccesslevelId
     };
   }  
       
