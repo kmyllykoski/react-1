@@ -4,6 +4,7 @@ import Laskuri from './Laskuri'
 import Viesti from './Viesti'
 import Posts from './Posts'
 import CustomerList from './CustomerList'
+import UserList from './UserList'
 import Message from './Message'
 
 import { Navbar } from 'react-bootstrap'
@@ -33,8 +34,8 @@ const huomio = () => {
           <Navbar.Brand href="/">NWApp</Navbar.Brand>
           <Nav className="mr-auto">
             <Nav.Link href="/customers">Customers</Nav.Link>
-            <Nav.Link href="/posts">Posts</Nav.Link>
             <Nav.Link href="/users">Users</Nav.Link>
+            <Nav.Link href="/posts">Posts</Nav.Link>
             <Nav.Link href="/laskuri">Laskuri</Nav.Link>
           </Nav>
         </Navbar>
@@ -55,10 +56,10 @@ const huomio = () => {
             <CustomerList setIsPositiveMessage={setIsPositiveMessage} setShowMessage={setShowMessage} setMessageText={setMessageText} />
           } />
 
-          {/* <Route path="/users" element={
+          <Route path="/users" element={
             <UserList setIsPositiveMessage={setIsPositiveMessage} setShowMessage={setShowMessage} setMessageText={setMessageText} />
-          } /> */}
-          
+          } />
+
           <Route path="/posts" element={
             <Posts info="Select social media posts from Northwind customers." />
           } />
