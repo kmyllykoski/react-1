@@ -27,12 +27,12 @@ import md5 from 'md5'
 }
 */
 
-const UserAdd = ({setAddUser, setIsPositiveMessage, setShowMessage, setMessageText, setShowUsers, setDetailUser}) => {
+const UserAdd = ({setAddUser, setIsPositiveMessage, setShowMessage, setMessageText, setShowUsers}) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const newUser = {
-        userId: newUserId,
+        // userId: newUserId,
         firstname: newFirstName,
         lastname: newLastName,
         email: newEmail,
@@ -56,7 +56,7 @@ const UserAdd = ({setAddUser, setIsPositiveMessage, setShowMessage, setMessageTe
           setShowUsers(true);
       }, 5000);
       setAddUser(false);
-      setDetailUser("");   
+      // setDetailUser("");   
       })
       
   .catch(error => {
@@ -136,8 +136,8 @@ const UserAdd = ({setAddUser, setIsPositiveMessage, setShowMessage, setMessageTe
         </table>
 
         <div className="form-buttons">
-          <button type="submit" className='button'>Add User</button>
-          <button type="button" className='button' onClick={() => {setAddUser(false); setDetailUser(null); setShowUsers(true);}}>Cancel</button>
+          <button type="submit" className='button'>Save</button>
+          <button type="button" className='button' onClick={() => {setAddUser(false); setShowUsers(true);}}>Cancel</button>
         </div>
       </form>
       </div>

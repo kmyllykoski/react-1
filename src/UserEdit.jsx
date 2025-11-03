@@ -1,203 +1,217 @@
 import './App.css'
 import React, { useState } from 'react'
-import CustomerService from './services/AxCustomers'
+import AxUsers from './services/AxUsers'
+import md5 from 'md5'
 
 /* 
-public partial class Customer
+{
     [Key]
-    [Column("CustomerID")]
-    [StringLength(5)]
-    public string CustomerId { get; set; } = null!;
-
-    [StringLength(40)]
-    public string CompanyName { get; set; } = null!;
+    public int UserId { get; set; }
 
     [StringLength(30)]
-    public string? ContactName { get; set; }
+    public string Firstname { get; set; } = null!;
 
     [StringLength(30)]
-    public string? ContactTitle { get; set; }
+    public string Lastname { get; set; } = null!;
 
-    [StringLength(60)]
-    public string? Address { get; set; }
+    [StringLength(50)]
+    public string? Email { get; set; }
 
-    [StringLength(15)]
-    public string? City { get; set; }
+    [StringLength(20)]
+    public string Username { get; set; } = null!;
 
-    [StringLength(15)]
-    public string? Region { get; set; }
+    [StringLength(200)]
+    public string Password { get; set; } = null!;
 
-    [StringLength(10)]
-    public string? PostalCode { get; set; }
-
-    [StringLength(15)]
-    public string? Country { get; set; }
-
-    [StringLength(24)]
-    public string? Phone { get; set; }
-
-    [StringLength(24)]
-    public string? Fax { get; set; }
+    public int AccesslevelId { get; set; }
+}
 */
 
-const CustomerEdit = ({setEditMode, setIsPositiveMessage, setShowMessage, setMessageText, customerToEdit, customers, setCustomers}) => {
+const UserEdit = ({setIsPositiveMessage, setShowMessage, setMessageText, setShowUsers, setEditMode, userToEdit, reloadUsers, setReloadUsers }) => {
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const updatedCustomer = {
-            customerId: updatedCustomerId,
-            companyName: updatedCompanyName,
-            contactName: updatedContactName,
-            contactTitle: updatedContactTitle,
-            address: updatedAddress,
-            city: updatedCity,
-            region: updatedRegion,
-            postalCode: updatedPostalCode,
-            country: updatedCountry,
-            phone: updatedPhone,
-            fax: updatedFax
-        };
+  // Local state for editing user details
+  const [newFirstName, setNewFirstName] = useState(userToEdit.firstname);
+  const [newLastName, setNewLastName] = useState(userToEdit.lastname);
+  const [newEmail, setNewEmail] = useState(userToEdit.email ?? '');
+  const [newUsername, setNewUsername] = useState(userToEdit.username);
+  const [newAccesslevelId, setNewAccesslevelId] = useState(userToEdit.accesslevelId);
 
-        CustomerService.update(updatedCustomer)
-        .then(response => {
-            console.log('Customer updated:', response);
-            setCustomers(customers.map(c => c.customerId === updatedCustomer.customerId ? updatedCustomer : c));
+  // Password change state
+  const [changePasswordMode, setChangePasswordMode] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
-            setIsPositiveMessage(true);
-            setMessageText(`Customer updated: ${updatedCustomer.customerId}`);
-            setShowMessage(true);
-            setTimeout(() => {
-                setShowMessage(false);
-            }, 5000);
-            setEditMode(false);
-            })
-            
-        .catch(error => {
-            console.error('Error updating customer:', error);
-            setIsPositiveMessage(false);
-            setMessageText(`Failed to update customer ${updatedCustomer.customerId}.`);
-            setShowMessage(true);
-            setTimeout(() => {
-                setShowMessage(false);
-            }, 7000);
-            });
-        }
-    // Komponentin tilan määritys
-    const [updatedCustomerId, setUpdatedCustomerId] = useState(customerToEdit.customerId);
-    const [updatedCompanyName, setUpdatedCompanyName] = useState(customerToEdit.companyName);
-    const [updatedContactName, setUpdatedContactName] = useState(customerToEdit.contactName);
-    const [updatedContactTitle, setUpdatedContactTitle] = useState(customerToEdit.contactTitle);
-    const [updatedAddress, setUpdatedAddress] = useState(customerToEdit.address);
-    const [updatedCity, setUpdatedCity] = useState(customerToEdit.city);
-    const [updatedRegion, setUpdatedRegion] = useState(customerToEdit.region);
-    const [updatedPostalCode, setUpdatedPostalCode] = useState(customerToEdit.postalCode);
-    const [updatedCountry, setUpdatedCountry] = useState(customerToEdit.country);
-    const [updatedPhone, setUpdatedPhone] = useState(customerToEdit.phone);
-    const [updatedFax, setUpdatedFax] = useState(customerToEdit.fax);
+  // Submit updated user details (not password)
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const updatedUser = {
+      userId: userToEdit.userId ?? userToEdit.userId,
+      firstname: newFirstName,
+      lastname: newLastName,
+      email: newEmail,
+      username: newUsername,
+      password: userToEdit.password,
+      accesslevelId: parseInt(newAccesslevelId)
+    };
 
+    console.log('Modifying user:', updatedUser);
+
+    AxUsers.update(updatedUser)
+      .then(response => {
+        console.log('User modified:', response);
+        setIsPositiveMessage(true);
+        setMessageText(`User modified: ${updatedUser.firstname} ${updatedUser.lastname}`);
+        setShowMessage(true);
+        setTimeout(() => {
+          setShowMessage(false);
+          setReloadUsers(!reloadUsers);
+          setShowUsers(true);
+        }, 3000);
+        setEditMode(false);
+      })
+      .catch(error => {
+        console.error('Error modifying user:', error);
+        setIsPositiveMessage(false);
+        setMessageText(`Failed to modify user: ${error.message}`);
+        setShowMessage(true);
+        setTimeout(() => setShowMessage(false), 5000);
+      });
+  };
+
+  // Submit new password only (shows only when changePasswordMode === true)
+  const handleSubmitOfNewPassword = (e) => {
+    e.preventDefault();
+    if (newPassword !== confirmPassword) {
+      setIsPositiveMessage(false);
+      setMessageText('Password and Confirm Password do not match.');
+      setShowMessage(true);
+      setTimeout(() => setShowMessage(false), 5000);
+      return;
+    }
+
+    const hashed = md5(newPassword);
+    const updatedUser = {
+      ...userToEdit,
+      password: hashed
+    };
+
+    console.log(`Changing password for user ${userToEdit.firstname} ${userToEdit.lastname}`);
+
+    AxUsers.update(updatedUser)
+      .then(response => {
+        console.log('Password changed:', response);
+        setIsPositiveMessage(true);
+        setMessageText(`Password changed for user ${userToEdit.firstname} ${userToEdit.lastname}.`);
+        setShowMessage(true);
+        setTimeout(() => {
+          setShowMessage(false);
+          setChangePasswordMode(false);
+          setReloadUsers(!reloadUsers);
+          setShowUsers(true);
+          setEditMode(false);
+        }, 3000);
+      })
+      .catch(error => {
+        console.error('Error changing password:', error);
+        setIsPositiveMessage(false);
+        setMessageText(`Failed to change password: ${error.message}`);
+        setShowMessage(true);
+        setTimeout(() => setShowMessage(false), 5000);
+      });
+  };
+
+  
+  // (state variables are declared earlier)
+
+  if (changePasswordMode) {
     return (
-        <div className='customerFormDiv'>
-        <h3>Edit Customer</h3>
-
-        <form onSubmit={handleSubmit}>
+      <div className='customerFormDiv'>
+        <h3>Change Password for {userToEdit.firstname} {userToEdit.lastname}</h3>
+        <form onSubmit={handleSubmitOfNewPassword}>
           <table className="customer-form-table">
             <tbody>
               <tr>
-                <th><label htmlFor="customerId">ID</label></th>
+                <th><label htmlFor="newPassword">New Password</label></th>
                 <td>
-                  <input id="customerId" type="text" value={updatedCustomerId} disabled />
+                  <input id="newPassword" type="password" value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)} placeholder="New Password" />
                 </td>
               </tr>
-
               <tr>
-                <th><label htmlFor="companyName">Company</label></th>
+                <th><label htmlFor="confirmPassword">Confirm Password</label></th>
                 <td>
-                  <input id="companyName" type="text" value={updatedCompanyName}
-                    onChange={(e) => setUpdatedCompanyName(e.target.value)} placeholder="Company Name" />
-                </td>
-              </tr>
-
-              <tr>
-                <th><label htmlFor="contactName">Contact</label></th>
-                <td>
-                  <input id="contactName" type="text" value={updatedContactName}
-                    onChange={(e) => setUpdatedContactName(e.target.value)} placeholder="Contact Name" />
-                </td>
-              </tr>
-
-              <tr>
-                <th><label htmlFor="contactTitle">Title</label></th>
-                <td>
-                  <input id="contactTitle" type="text" value={updatedContactTitle}
-                    onChange={(e) => setUpdatedContactTitle(e.target.value)} placeholder="Contact Title" />
-                </td>
-              </tr>
-
-              <tr>
-                <th><label htmlFor="address">Address</label></th>
-                <td>
-                  <input id="address" type="text" value={updatedAddress}
-                    onChange={(e) => setUpdatedAddress(e.target.value)} placeholder="Address" />
-                </td>
-              </tr>
-
-              <tr>
-                <th><label htmlFor="city">City</label></th>
-                <td>
-                  <input id="city" type="text" value={updatedCity}
-                    onChange={(e) => setUpdatedCity(e.target.value)} placeholder="City" />
-                </td>
-              </tr>
-
-              <tr>
-                <th><label htmlFor="region">Region</label></th>
-                <td>
-                  <input id="region" type="text" value={updatedRegion}
-                    onChange={(e) => setUpdatedRegion(e.target.value)} placeholder="Region" />
-                </td>
-              </tr>
-
-              <tr>
-                <th><label htmlFor="postalCode">Postal Code</label></th>
-                <td>
-                  <input id="postalCode" type="text" value={updatedPostalCode}
-                    onChange={(e) => setUpdatedPostalCode(e.target.value)} placeholder="Postal Code" />
-                </td>
-              </tr>
-
-              <tr>
-                <th><label htmlFor="country">Country</label></th>
-                <td>
-                  <input id="country" type="text" value={updatedCountry}
-                    onChange={(e) => setUpdatedCountry(e.target.value)} placeholder="Country" />
-                </td>
-              </tr>
-
-              <tr>
-                <th><label htmlFor="phone">Phone</label></th>
-                <td>
-                  <input id="phone" type="text" value={updatedPhone}
-                    onChange={(e) => setUpdatedPhone(e.target.value)} placeholder="Phone" />
-                </td>
-              </tr>
-
-              <tr>
-                <th><label htmlFor="fax">Fax</label></th>
-                <td>
-                  <input id="fax" type="text" value={updatedFax}
-                    onChange={(e) => setUpdatedFax(e.target.value)} placeholder="Fax" />
+                  <input id="confirmPassword" type="password" value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Confirm Password" />
                 </td>
               </tr>
             </tbody>
           </table>
 
           <div className="form-buttons">
-            <button type="submit" className='button'>Save Customer</button>
-            <button type="button" className='button' onClick={() => setEditMode(false)}>Cancel</button>
+            <button type="submit" className='button'>Save</button>
+            <button type="button" className='button' onClick={() => {setChangePasswordMode(false)}}>Cancel</button>
           </div>
         </form>
-        </div>
-    )
-}
+      </div>
+    );
+  }
 
-export default CustomerEdit
+  return (
+    <div>
+      <h3>Edit User</h3>
+      <form onSubmit={handleSubmit}>
+        <table className="customer-form-table">
+          <tbody>
+            <tr>
+              <th><label htmlFor="newFirstName">First Name</label></th>
+              <td>
+                <input id="firstName" type="text" value={newFirstName}
+                  onChange={(e) => setNewFirstName(e.target.value)} placeholder="First Name" />
+              </td>
+            </tr>
+
+            <tr>
+              <th><label htmlFor="newLastName">Last Name</label></th>
+              <td>
+                <input id="lastName" type="text" value={newLastName}
+                  onChange={(e) => setNewLastName(e.target.value)} placeholder="Last Name" />
+              </td>
+            </tr>
+
+            <tr>
+              <th><label htmlFor="newEmail">Email</label></th>
+              <td>
+                <input id="email" type="email" value={newEmail}
+                  onChange={(e) => setNewEmail(e.target.value)} placeholder="Email" />
+              </td>
+            </tr>
+
+            <tr>
+              <th><label htmlFor="newUsername">Username</label></th>
+              <td>
+                <input id="username" type="text" value={newUsername}
+                  onChange={(e) => setNewUsername(e.target.value)} placeholder="Username" />
+              </td>
+            </tr>
+
+            <tr>
+              <th><label htmlFor="newAccesslevelId">Access Level</label></th>
+              <td>
+                <input id="accesslevelId" type="number" value={newAccesslevelId}
+                  onChange={(e) => setNewAccesslevelId(e.target.value)} placeholder="Access Level" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div className="form-buttons">
+          <button type="submit" className='button'>Save</button>
+          <button type="button" className='button' onClick={() => {setChangePasswordMode(true)}}>Change Password</button>
+          <button type="button" className='button' onClick={() => {setEditMode(false); setShowUsers(true);}}>Cancel</button>
+        </div>
+      </form>
+    </div>
+  );
+}
+  
+export default UserEdit
