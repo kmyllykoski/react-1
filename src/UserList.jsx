@@ -100,29 +100,35 @@ const filteredUsers = (users || []).filter(u => {
         
 
         {showUsers && !editMode && !addUser && filteredUsers.length > 0 && (
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredUsers.map(u => (
-                <tr key={u.userId}>
-                  <td>{u.userId}</td>
-                  <td>{u.name}</td>
-                  <td>{u.email}</td>
-                  <td>
-                    <button onClick={() => editUser(u)}>Edit</button>
-                    <button onClick={() => deleteUser(u.userId)}>Delete</button>
-                  </td>
+          <div className="table-responsive">
+            <table className="table table-striped table-hover align-middle">
+              <thead className="table-light">
+                <tr>
+                  <th>ID</th>
+                  <th>Firstname</th>
+                  <th>Lastname</th>
+                  <th>Email</th>
+                  <th>Accesslevel</th>
+                  <th></th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {filteredUsers.map(u => (
+                  <tr key={u.userId}>
+                    <td>{u.userId}</td>
+                    <td>{u.firstname}</td>
+                    <td>{u.lastname}</td>
+                    <td>{u.email}</td>
+                    <td>{u.accesslevelId}</td>
+                    <td>
+                      <button className="btn btn-sm btn-primary me-2" onClick={() => editUser(u)}>Edit</button>
+                      <button className="btn btn-sm btn-danger" onClick={() => deleteUser(u.userId)}>Delete</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
     </>
   )

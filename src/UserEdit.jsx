@@ -160,7 +160,7 @@ const UserEdit = ({setIsPositiveMessage, setShowMessage, setMessageText, setShow
     <div>
       <h3>Edit User</h3>
       <form onSubmit={handleSubmit}>
-        <table className="customer-form-table">
+        <table className="user-form-table">
           <tbody>
             <tr>
               <th><label htmlFor="newFirstName">First Name</label></th>
