@@ -1,6 +1,7 @@
 import './App.css'
 import React, { useState } from 'react'
 import AxUsers from './services/AxUsers'
+import md5 from 'md5'
 
 /* 
 {
@@ -36,10 +37,12 @@ const UserAdd = ({setAddUser, setIsPositiveMessage, setShowMessage, setMessageTe
         lastname: newLastName,
         email: newEmail,
         username: newUsername,
-        password: newPassword,
-        accesslevelId: newAccesslevelId
+        password: md5(newPassword),
+        accesslevelId: parseInt(newAccesslevelId)
     };
   }  
+
+  console.log('Adding user:', newUser);
       
   AxUsers.create(newUser)
   .then(response => {
@@ -67,13 +70,13 @@ const UserAdd = ({setAddUser, setIsPositiveMessage, setShowMessage, setMessageTe
       });
   
   // Komponentin tilan määritys
-  const [newUserId, setNewUserId] = useState('');
+  // const [newUserId, setNewUserId] = useState('');
   const [newFirstName, setNewFirstName] = useState('');
   const [newLastName, setNewLastName] = useState('');
   const [newEmail, setNewEmail] = useState('');
   const [newUsername, setNewUsername] = useState('');
   const [newPassword, setNewPassword] = useState('');
-  const [newAccesslevelId, setNewAccesslevelId] = useState('');
+  const [newAccesslevelId, setNewAccesslevelId] = useState(2); // Default access level
 
   return (
       <div className='customerFormDiv'>
@@ -82,15 +85,6 @@ const UserAdd = ({setAddUser, setIsPositiveMessage, setShowMessage, setMessageTe
       <form onSubmit={handleSubmit}>
         <table className="customer-form-table">
           <tbody>
-            <tr>
-              <th><label htmlFor="newUserId">ID</label></th>
-              <td>
-                <input id="userId" type="text" value={newUserId}
-                  onChange={(e) => setNewUserId(e.target.value)}
-                  placeholder="ID with 5 capital letters" maxLength={5} minLength={5} />
-              </td>
-            </tr>
-
             <tr>
               <th><label htmlFor="newFirstName">First Name</label></th>
               <td>
@@ -110,7 +104,7 @@ const UserAdd = ({setAddUser, setIsPositiveMessage, setShowMessage, setMessageTe
             <tr>
               <th><label htmlFor="newEmail">Email</label></th>
               <td>
-                <input id="email" type="text" value={newEmail}
+                <input id="email" type="email" value={newEmail}
                   onChange={(e) => setNewEmail(e.target.value)} placeholder="Email" />
               </td>
             </tr>
@@ -134,7 +128,7 @@ const UserAdd = ({setAddUser, setIsPositiveMessage, setShowMessage, setMessageTe
             <tr>
               <th><label htmlFor="newAccesslevelId">Access Level</label></th>
               <td>
-                <input id="accesslevelId" type="text" value={newAccesslevelId}
+                <input id="accesslevelId" type="number" value={newAccesslevelId}
                   onChange={(e) => setNewAccesslevelId(e.target.value)} placeholder="Access Level" />
               </td>
             </tr>
