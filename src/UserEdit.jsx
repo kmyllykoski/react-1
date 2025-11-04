@@ -62,12 +62,13 @@ const UserEdit = ({setIsPositiveMessage, setShowMessage, setMessageText, setShow
         setIsPositiveMessage(true);
         setMessageText(`User modified: ${updatedUser.firstname} ${updatedUser.lastname}`);
         setShowMessage(true);
+        setReloadUsers(!reloadUsers);
         setTimeout(() => {
           setShowMessage(false);
-          setReloadUsers(!reloadUsers);
+          setEditMode(false);
           setShowUsers(true);
         }, 3000);
-        setEditMode(false);
+        
       })
       .catch(error => {
         console.error('Error modifying user:', error);

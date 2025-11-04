@@ -33,7 +33,7 @@ const editUser = (user) => {
 
 const deleteUser = (userId) => {
     if (window.confirm(`Are you sure you want to delete user with ID: ${userId}?`)) {
-      AxUsers.deleteUser(userId)
+      AxUsers.remove(userId)
         .then(() => {
           setUsers(users.filter(u => u.userId !== userId));
           setIsPositiveMessage(true);
@@ -61,10 +61,12 @@ const filteredUsers = (users || []).filter(u => {
 
   return (
     <>
+        {!addUser && !editMode &&
         <h4>
           Users from MSSQLExpress with Axios
           <span className='user-count'> (Count: {filteredUsers.length})</span>
         </h4>
+        }
         
         <div className="controls">
             {!addUser && !editMode &&

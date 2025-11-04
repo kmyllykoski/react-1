@@ -40,9 +40,7 @@ const huomio = () => {
           </Nav>
         </Navbar>
 
-        { showMessage && (
-          <Message message={messageText} isPositive={isPositiveMessage} />
-        )}
+        
 
         <Routes>
           <Route path="/" element={
@@ -71,6 +69,12 @@ const huomio = () => {
         </Routes>
 
       </Router>  
+
+      { showMessage && (
+          <Message message={messageText} isPositive={isPositiveMessage} />
+        )
+      } 
+
     </div>
   )
 }

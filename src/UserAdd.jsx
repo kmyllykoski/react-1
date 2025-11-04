@@ -63,9 +63,10 @@ const UserAdd = ({setAddUser, setIsPositiveMessage, setShowMessage, setMessageTe
         setReloadUsers(!reloadUsers); // Trigger reload of users in parent component
         setTimeout(() => {
           setShowMessage(false);
+          setAddUser(false);
           setShowUsers(true);
         }, 5000);
-        setAddUser(false);
+        
       })
       .catch(error => {
         console.error('Error adding user:', error);
