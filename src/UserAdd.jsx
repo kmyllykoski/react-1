@@ -27,48 +27,8 @@ import md5 from 'md5'
 }
 */
 
-const UserAdd = ({setAddUser, setIsPositiveMessage, setShowMessage, setMessageText, setShowUsers}) => {
+const UserAdd = ({setAddUser, setIsPositiveMessage, setShowMessage, setMessageText, setShowUsers, reloadUsers, setReloadUsers}) => {
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const newUser = {
-        // userId: newUserId,
-        firstname: newFirstName,
-        lastname: newLastName,
-        email: newEmail,
-        username: newUsername,
-        password: md5(newPassword),
-        accesslevelId: parseInt(newAccesslevelId)
-    };
-  }  
-
-  console.log('Adding user:', newUser);
-      
-  AxUsers.create(newUser)
-  .then(response => {
-      console.log('User added:', response);
-      // alert(`User added: userId: ${newUser.userId} ${newUser.firstname} ${newUser.lastname}`);
-      setIsPositiveMessage(true);
-      setMessageText(`User added: userId: ${newUser.userId} ${newUser.firstname} ${newUser.lastname}`);
-      setShowMessage(true);
-      setTimeout(() => {
-          setShowMessage(false);
-          setShowUsers(true);
-      }, 5000);
-      setAddUser(false);
-      // setDetailUser("");   
-      })
-      
-  .catch(error => {
-      console.error('Error adding user:', error);
-      setIsPositiveMessage(false);
-      setMessageText(`Failed to add user ${newUser.userId} ${newUser.firstname} ${newUser.lastname}: ${error.message}`);
-      setShowMessage(true);
-      setTimeout(() => {
-          setShowMessage(false);
-      }, 7000);
-      });
-  
   // Komponentin tilan määritys
   // const [newUserId, setNewUserId] = useState('');
   const [newFirstName, setNewFirstName] = useState('');
@@ -77,6 +37,46 @@ const UserAdd = ({setAddUser, setIsPositiveMessage, setShowMessage, setMessageTe
   const [newUsername, setNewUsername] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [newAccesslevelId, setNewAccesslevelId] = useState(2); // Default access level
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newUser = {
+      // userId: newUserId,
+      firstname: newFirstName,
+      lastname: newLastName,
+      email: newEmail,
+      username: newUsername,
+      password: md5(newPassword),
+      accesslevelId: Number(newAccesslevelId)
+    };
+
+    console.log('Adding user:', newUser);
+
+    AxUsers.create(newUser)
+      .then(response => {
+        console.log('User added:', response);
+        setIsPositiveMessage(true);
+        // response should contain created user (with userId)
+        const createdId = response?.userId ?? response?.UserId ?? '';
+        setMessageText(`User added: userId: ${createdId} ${newUser.firstname} ${newUser.lastname}`);
+        setShowMessage(true);
+        setReloadUsers(!reloadUsers); // Trigger reload of users in parent component
+        setTimeout(() => {
+          setShowMessage(false);
+          setShowUsers(true);
+        }, 5000);
+        setAddUser(false);
+      })
+      .catch(error => {
+        console.error('Error adding user:', error);
+        setIsPositiveMessage(false);
+        setMessageText(`Failed to add user ${newUser.firstname} ${newUser.lastname}: ${error.message}`);
+        setShowMessage(true);
+        setTimeout(() => {
+          setShowMessage(false);
+        }, 7000);
+      });
+  }
 
   return (
       <div className='customerFormDiv'>

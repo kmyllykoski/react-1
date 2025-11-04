@@ -54,9 +54,9 @@ const handleSearchChange = (e) => {
 
 // safe filtered array (always returns all users when search empty/whitespace)
 const filteredUsers = (users || []).filter(u => {
-  const name = (u?.name || '').toLowerCase();
+  const lastname = (u?.lastname || '').toLowerCase();
   const q = (search || '').trim().toLowerCase();
-  return q === '' || name.includes(q);
+  return q === '' || lastname.includes(q);
 });
 
   return (
@@ -91,7 +91,8 @@ const filteredUsers = (users || []).filter(u => {
         </div>
 
         {addUser && <UserAdd setAddUser={setAddUser} setIsPositiveMessage={setIsPositiveMessage}
-        setShowMessage={setShowMessage} setMessageText={setMessageText} setShowUsers={setShowUsers} />}
+        setShowMessage={setShowMessage} setMessageText={setMessageText} setShowUsers={setShowUsers} 
+        reloadUsers={reloadUsers} setReloadUsers={setReloadUsers} />}
 
         {editMode && <UserEdit setEditMode={setEditMode} setIsPositiveMessage={setIsPositiveMessage} setShowMessage={setShowMessage}
          setMessageText={setMessageText} userToEdit={userToEdit} reloadUsers={reloadUsers} setReloadUsers={setReloadUsers} 
