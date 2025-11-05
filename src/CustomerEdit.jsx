@@ -42,6 +42,9 @@ public partial class Customer
 
 const CustomerEdit = ({setEditMode, setIsPositiveMessage, setShowMessage, setMessageText, customerToEdit, customers, setCustomers}) => {
 
+    // Scroll to top when component loads
+    window.scrollTo(0, 0);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const updatedCustomer = {
@@ -89,7 +92,7 @@ const CustomerEdit = ({setEditMode, setIsPositiveMessage, setShowMessage, setMes
     const [updatedContactTitle, setUpdatedContactTitle] = useState(customerToEdit.contactTitle);
     const [updatedAddress, setUpdatedAddress] = useState(customerToEdit.address);
     const [updatedCity, setUpdatedCity] = useState(customerToEdit.city);
-    const [updatedRegion, setUpdatedRegion] = useState(customerToEdit.region);
+    const [updatedRegion, setUpdatedRegion] = useState(customerToEdit.region || '');
     const [updatedPostalCode, setUpdatedPostalCode] = useState(customerToEdit.postalCode);
     const [updatedCountry, setUpdatedCountry] = useState(customerToEdit.country);
     const [updatedPhone, setUpdatedPhone] = useState(customerToEdit.phone);
@@ -191,9 +194,9 @@ const CustomerEdit = ({setEditMode, setIsPositiveMessage, setShowMessage, setMes
             </tbody>
           </table>
 
-          <div className="form-buttons">
-            <button type="submit" className='button'>Save Customer</button>
-            <button type="button" className='button' onClick={() => setEditMode(false)}>Cancel</button>
+          <div className="d-flex gap-2 justify-content-center flex-wrap my-3">
+            <button type="submit" className="btn btn-primary me-2">Save Customer</button>
+            <button type="button" className="btn btn-secondary" onClick={() => setEditMode(false)}>Cancel</button>
           </div>
         </form>
         </div>

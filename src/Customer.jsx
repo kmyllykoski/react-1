@@ -3,7 +3,8 @@ import React, { useState } from 'react'
 import CustomerService from './services/AxCustomers'
 
 // Propsina asiakasobjekti
-const Customer = ({customer, customers, editCustomer, setMessageText, setShowMessage, setIsPositiveMessage, setCustomers, detailCustomer, setDetailCustomer}) => {
+const Customer = ({customer, customers, editCustomer, setMessageText, setShowMessage, setIsPositiveMessage,
+                 setCustomers, detailCustomer, setDetailCustomer, setShowCustomers}) => {
 
 // Komponentin tilan määritys
 // const [showDetails, setShowDetails] = useState(false)
@@ -16,14 +17,16 @@ const handleDelete = (customer) => {
         
         console.log('Customer deleted:', response.status);
         if (response.status === 204) {
+            setShowCustomers(false);
+            window.scrollTo(0, 0);
             setIsPositiveMessage(true);
             setMessageText(`Customer deleted: ${customer.companyName} with response status: ${response.status}`);
             setShowMessage(true);
-            // Scroll to top to see the message
-            window.scrollTo(0, 0);
+           
             setTimeout(() => {
                 setShowMessage(false);
                 setCustomers(customers.filter(c => c.customerId !== customer.customerId));
+                setShowCustomers(true);
             }, 7000);
         }
         // alert(`Customer deleted: ${customer.companyName} with response status: ${response.status}`);
@@ -70,9 +73,9 @@ const handleDelete = (customer) => {
           <div className='customerDetails'>
             <h3>{customer.companyName}</h3>
             <div className='buttonRow'>
-            <button className='buttondelete' onClick={() => handleDelete(customer)}>Delete</button>
-            <button className='buttonedit' onClick={() => editCustomer(customer)}>Edit</button>
-            <button className='buttonclose' onClick={() => setDetailCustomer(null)}>Close</button>
+            <button className="btn btn-sm btn-danger" onClick={() => handleDelete(customer)}>Delete</button>
+            <button className="btn btn-sm btn-primary" onClick={() => editCustomer(customer)}>Edit</button>
+            <button className="btn btn-sm btn-secondary" onClick={() => setDetailCustomer(null)}>Close</button>
             </div>
             <table>
                 <thead>

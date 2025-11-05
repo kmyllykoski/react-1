@@ -51,13 +51,15 @@ const filteredCustomers = (customers || []).filter(c => {
         </h4>
         
         <div className="controls">
+          {!addCustomer && !editMode &&
             <button
             className='btn btn-outline-primary btn-sm btn-toggle'
             onClick={(e) => { e.stopPropagation(); setShowCustomers(!showCustomers); }}
             >
             {showCustomers ? 'Hide' : 'Show'} Customers
             </button>
-
+            }
+            
             {!addCustomer && !editMode &&
             <button
                 className='btn btn-success btn-sm'
@@ -91,7 +93,7 @@ const filteredCustomers = (customers || []).filter(c => {
         {showCustomers && !editMode && !addCustomer && filteredCustomers.map(c =>
            <Customer key={c.customerId} customer={c} editCustomer={editCustomer} customers={customers} setMessageText={setMessageText}
            setShowMessage={setShowMessage} setIsPositiveMessage={setIsPositiveMessage} setCustomers={setCustomers}
-           detailCustomer={detailCustomer} setDetailCustomer={setDetailCustomer} />
+           detailCustomer={detailCustomer} setDetailCustomer={setDetailCustomer} setShowCustomers={setShowCustomers} />
         )}
     </>
   )

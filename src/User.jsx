@@ -70,9 +70,9 @@ const handleDelete = (user) => {
           <div className='userDetails'>
             <h3>{user.firstname} {user.lastname}</h3>
             <div className='buttonRow'>
-            <button className='buttondelete' onClick={() => handleDelete(user)}>Delete</button>
-            <button className='buttonedit' onClick={() => editUser(user)}>Edit</button>
-            <button className='buttonclose' onClick={() => setDetailUser(null)}>Close</button>
+            <button className="btn btn-sm btn-danger" onClick={() => handleDelete(user)}>Delete</button>
+            <button className="btn btn-sm btn-primary" onClick={() => editUser(user)}>Edit</button>
+            <button className="btn btn-sm btn-secondary" onClick={() => setDetailUser(null)}>Close</button>
             </div>
             <table>
                 <thead>

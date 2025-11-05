@@ -136,9 +136,9 @@ const UserAdd = ({setAddUser, setIsPositiveMessage, setShowMessage, setMessageTe
           </tbody>
         </table>
 
-        <div className="form-buttons">
-          <button type="submit" className='button'>Save</button>
-          <button type="button" className='button' onClick={() => {setAddUser(false); setShowUsers(true);}}>Cancel</button>
+        <div className="d-flex gap-2 justify-content-center flex-wrap my-3">
+          <button type="submit" className="btn btn-primary me-2">Save</button>
+          <button type="button" className="btn btn-secondary" onClick={() => {setAddUser(false); setShowUsers(true);}}>Cancel</button>
         </div>
       </form>
       </div>

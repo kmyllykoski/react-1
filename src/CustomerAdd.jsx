@@ -42,6 +42,9 @@ public partial class Customer
 
 const CustomerAdd = ({setAddCustomer, setIsPositiveMessage, setShowMessage, setMessageText, setShowCustomers, setDetailCustomer}) => {
 
+     // Scroll to top when component loads
+    window.scrollTo(0, 0);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const newCustomer = {
@@ -194,9 +197,9 @@ const CustomerAdd = ({setAddCustomer, setIsPositiveMessage, setShowMessage, setM
             </tbody>
           </table>
 
-          <div className="form-buttons">
-            <button type="submit" className='button'>Add Customer</button>
-            <button type="button" className='button' onClick={() => {setAddCustomer(false); setDetailCustomer(null); setShowCustomers(true);}}>Cancel</button>
+          <div className="d-flex gap-2 justify-content-center flex-wrap my-3">
+            <button type="submit" className="btn btn-primary me-2">Add Customer</button>
+            <button type="button" className="btn btn-secondary" onClick={() => {setAddCustomer(false); setDetailCustomer(null); setShowCustomers(true);}}>Cancel</button>
           </div>
         </form>
         </div>

@@ -129,7 +129,7 @@ const UserEdit = ({setIsPositiveMessage, setShowMessage, setMessageText, setShow
       <div className='customerFormDiv'>
         <h3>Change Password for {userToEdit.firstname} {userToEdit.lastname}</h3>
         <form onSubmit={handleSubmitOfNewPassword}>
-          <table className="customer-form-table">
+          <table className="user-form-table">
             <tbody>
               <tr>
                 <th><label htmlFor="newPassword">New Password</label></th>
@@ -148,9 +148,9 @@ const UserEdit = ({setIsPositiveMessage, setShowMessage, setMessageText, setShow
             </tbody>
           </table>
 
-          <div className="form-buttons">
-            <button type="submit" className='button'>Save</button>
-            <button type="button" className='button' onClick={() => {setChangePasswordMode(false)}}>Cancel</button>
+          <div className="d-flex gap-2 justify-content-center flex-wrap my-3">
+            <button type="submit" className="btn btn-sm btn-primary me-2">Save</button>
+            <button type="button" className="btn btn-sm btn-secondary" onClick={() => {setChangePasswordMode(false)}}>Cancel</button>
           </div>
         </form>
       </div>
@@ -158,7 +158,7 @@ const UserEdit = ({setIsPositiveMessage, setShowMessage, setMessageText, setShow
   }
 
   return (
-    <div>
+    <div className='customerFormDiv'>
       <h3>Edit User</h3>
       <form onSubmit={handleSubmit}>
         <table className="user-form-table">
@@ -205,10 +205,10 @@ const UserEdit = ({setIsPositiveMessage, setShowMessage, setMessageText, setShow
           </tbody>
         </table>
 
-        <div className="form-buttons">
-          <button type="submit" className='button'>Save</button>
-          <button type="button" className='button' onClick={() => {setChangePasswordMode(true)}}>Change Password</button>
-          <button type="button" className='button' onClick={() => {setEditMode(false); setShowUsers(true);}}>Cancel</button>
+        <div className="d-flex gap-2 justify-content-center flex-wrap my-3">
+          <button type="submit" className="btn btn-sm btn-primary me-2">Save</button>
+          <button type="button" className="btn btn-sm btn-primary me-2" onClick={() => {setChangePasswordMode(true)}}>Change Password</button>
+          <button type="button" className="btn btn-sm btn-secondary" onClick={() => {setEditMode(false); setShowUsers(true);}}>Cancel</button>
         </div>
       </form>
     </div>
