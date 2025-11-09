@@ -6,6 +6,7 @@ import Posts from './Posts'
 import CustomerList from './CustomerList'
 import UserList from './UserList'
 import Message from './Message'
+import Login from './Login'
 
 import { Navbar } from 'react-bootstrap'
 import Nav from 'react-bootstrap/Nav'
@@ -29,6 +30,9 @@ const huomio = () => {
 
   return (
     <div className="App">
+
+      <Login setIsPositiveMessage={setIsPositiveMessage} setShowMessage={setShowMessage} 
+        setMessageText={setMessageText} />
       <Router>
         <Navbar bg="dark" variant="dark">
           <Navbar.Brand href="/">NWApp</Navbar.Brand>
