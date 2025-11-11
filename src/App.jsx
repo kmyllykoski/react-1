@@ -43,6 +43,7 @@ const App = () => {
       setLoggedInUser(null);
       setAccesslevelId(null);
       setLogoutRequested(true);
+      localStorage.clear();
     }, []);
 
     return null;
