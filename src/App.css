@@ -131,6 +131,28 @@
   padding: 1rem;
 }
 
+/* Login form centering and Bootstrap-friendly table */
+.loginFormDiv {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 30vh; /* center vertically in viewport */
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1rem;
+}
+
+.login-form-table {
+  width: 100%;
+  max-width: 420px; /* form max width */
+  margin: 0 auto;
+}
+
+.login-form-table .form-control {
+  width: 100%;
+}
+
 /* Keep table a reasonable width and centered */
 .customer-form-table {
   width: 100%;

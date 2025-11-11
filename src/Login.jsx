@@ -27,7 +27,7 @@ import md5 from 'md5'
 }
 */
 
-const Login = ({setIsPositiveMessage, setShowMessage, setMessageText}) => {
+const Login = ({setIsPositiveMessage, setShowMessage, setMessageText, setLoggedInUser, setAccesslevelId}) => {
 
   // Komponentin tilan määritys
   // const [newUserId, setNewUserId] = useState('');
@@ -52,6 +52,8 @@ const Login = ({setIsPositiveMessage, setShowMessage, setMessageText}) => {
         localStorage.setItem('username', response.username);
         localStorage.setItem('accesslevelId', response.accesslevelId);
         localStorage.setItem('token', response.token);
+        setLoggedInUser(response.username);
+        setAccesslevelId(response.accesslevelId);
         setIsPositiveMessage(true);
         // response should contain created user (with userId)
         // const createdId = response?.userId ?? response?.UserId ?? '';
@@ -59,7 +61,7 @@ const Login = ({setIsPositiveMessage, setShowMessage, setMessageText}) => {
         setShowMessage(true);
         setTimeout(() => {
           setShowMessage(false);
-        }, 5000);
+        }, 2000);
         
       })
       .catch(error => {
@@ -69,7 +71,7 @@ const Login = ({setIsPositiveMessage, setShowMessage, setMessageText}) => {
         setShowMessage(true);
         setTimeout(() => {
           setShowMessage(false);
-        }, 7000);
+        }, 5000);
       });
   }
 
@@ -80,16 +82,16 @@ const Login = ({setIsPositiveMessage, setShowMessage, setMessageText}) => {
   }
 
   return (
-      <div className='userFormDiv'>
-      <h3>Add New User</h3>
+      <div className='loginFormDiv'>
+      <h3>Login</h3>
 
       <form onSubmit={handleSubmit}>
-        <table className="user-form-table">
+        <table className="table table-borderless login-form-table">
           <tbody>
             <tr>
               <th><label htmlFor="Username">Username</label></th>
               <td>
-                <input id="username" type="text" value={authUsername}
+                <input id="username" type="text" className="form-control" value={authUsername}
                   onChange={(e) => setAuthUsername(e.target.value)} placeholder="Username" />
               </td>
             </tr>
@@ -97,7 +99,7 @@ const Login = ({setIsPositiveMessage, setShowMessage, setMessageText}) => {
             <tr>
               <th><label htmlFor="Password">Password</label></th>
               <td>
-                <input id="password" type="password" value={authPassword}
+                <input id="password" type="password" className="form-control" value={authPassword}
                   onChange={(e) => setAuthPassword(e.target.value)} placeholder="Password" />
               </td>
             </tr>
