@@ -50,6 +50,7 @@ const App = () => {
       setMessageText('User has successfully logged out.');
       setShowMessage(true);
       
+      
 
       // hide message and navigate after 3s
       const t = setTimeout(() => {
@@ -57,6 +58,7 @@ const App = () => {
         setShowLogin(true); // ensure login form is visible on home
         navigate('/', { replace: true });
         setLogoutRequested(false); // reset flag
+        console.log('User logged out.');
       }, 3000);
 
       return () => clearTimeout(t);
@@ -70,19 +72,18 @@ const App = () => {
 
       <Router>
         <Navbar bg="dark" variant="dark">
-          <Navbar.Brand href="/">NWApp</Navbar.Brand>
-          <Nav className="mr-auto">
-           {loggedInUser && <Nav.Link href="/customers">Customers</Nav.Link>}
-           {loggedInUser && <Nav.Link href="/users">Users</Nav.Link>}
-           {loggedInUser && <Nav.Link href="/posts">Posts</Nav.Link>}
-           {loggedInUser && <Nav.Link href="/laskuri">Laskuri</Nav.Link>}
+          <Navbar.Brand as={Link} to="/">NWApp</Navbar.Brand>
+          <Nav className="me-auto">
+           {loggedInUser && <Nav.Link as={Link} to="/customers">Customers</Nav.Link>}
+           {loggedInUser && <Nav.Link as={Link} to="/users">Users</Nav.Link>}
+           {loggedInUser && <Nav.Link as={Link} to="/posts">Posts</Nav.Link>}
+           {loggedInUser && <Nav.Link as={Link} to="/laskuri">Laskuri</Nav.Link>}
            {loggedInUser && (
              <Nav.Link
                as={Link}
                to="/logout"
                onClick={(e) => {
-                 // DO NOT assign logoutRequested = true
-                 setLogoutRequested(true); // correct way to update React state
+                 setLogoutRequested(true);
                }}
              >
                Logout
@@ -91,7 +92,7 @@ const App = () => {
           </Nav>
         </Navbar>
 
-        {/* AuthWatcher must be inside Router so it can use navigate */}
+        {/* Logout must be inside Router so it can use navigate */}
         <Logout />
 
         <Routes>
