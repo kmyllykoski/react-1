@@ -29,7 +29,7 @@ const App = () => {
   const [logoutRequested, setLogoutRequested] = useState(false)
 
   // check cookies for existing login
-  const checkLogin = () => {
+  const checkLoginFromLocalStorage = () => {
     const username = localStorage.getItem("username");
     const accesslevelId = localStorage.getItem("accesslevelId");
     console.log('Found login from localStorage:', username, accesslevelId);
@@ -40,7 +40,7 @@ const App = () => {
   };
 
   React.useEffect(() => {
-    checkLogin();
+    checkLoginFromLocalStorage();
   }, []);
 
   // small inline component to perform logout side-effects and show message
@@ -152,7 +152,7 @@ const App = () => {
           } />
 
           <Route path="/posts" element={
-            <Posts info="Select social media posts from Northwind customers." />
+            <Posts info="Selected social media posts from Northwind customers." />
           } />
 
           <Route path="/laskuri" element={
