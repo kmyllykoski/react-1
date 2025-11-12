@@ -73,23 +73,36 @@ const App = () => {
       <Router>
         <Navbar bg="dark" variant="dark">
           <Navbar.Brand as={Link} to="/">NWApp</Navbar.Brand>
+
+          {/* left-side nav */}
           <Nav className="me-auto">
-           {loggedInUser && <Nav.Link as={Link} to="/customers">Customers</Nav.Link>}
-           {loggedInUser && <Nav.Link as={Link} to="/users">Users</Nav.Link>}
-           {loggedInUser && <Nav.Link as={Link} to="/posts">Posts</Nav.Link>}
-           {loggedInUser && <Nav.Link as={Link} to="/laskuri">Laskuri</Nav.Link>}
-           {loggedInUser && (
-             <Nav.Link
-               as={Link}
-               to="/logout"
-               onClick={(e) => {
-                 setLogoutRequested(true);
-               }}
-             >
-               Logout
-             </Nav.Link>
-           )}
+            {loggedInUser && <Nav.Link as={Link} to="/customers">Customers</Nav.Link>}
+            {loggedInUser && <Nav.Link as={Link} to="/users">Users</Nav.Link>}
+            {loggedInUser && <Nav.Link as={Link} to="/posts">Posts</Nav.Link>}
+            {<Nav.Link as={Link} to="/laskuri">Laskuri</Nav.Link>}
           </Nav>
+
+          {/* right-side nav */}
+          <Nav className="ms-auto align-items-center">
+            {loggedInUser && (
+              <>
+                {/* display username */}
+                <Navbar.Text className="me-3">Logged in as: {loggedInUser}</Navbar.Text>
+
+                <Nav.Link
+                  as={Link}
+                  to="/logout"
+                  onClick={() => setLogoutRequested(true)}
+                >
+                  Logout
+                </Nav.Link>
+              </>
+            )}
+            {!loggedInUser && (
+              <Nav.Link as={Link} to="/">Login</Nav.Link>
+            )}
+          </Nav>
+
         </Navbar>
 
         {/* Logout must be inside Router so it can use navigate */}
