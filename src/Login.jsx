@@ -50,8 +50,11 @@ const Login = ({setIsPositiveMessage, setShowMessage, setMessageText, setLoggedI
         // Handle successful authentication
         console.log('User authenticated with data:', response);
         localStorage.setItem('username', response.username);
+        console.log('Storing username in localStorage:', response.username);
         localStorage.setItem('accesslevelId', response.accesslevelId);
+        console.log('Storing accesslevelId in localStorage:', response.accesslevelId);
         localStorage.setItem('token', response.token);
+        console.log('Storing token in localStorage:', response.token);
         setLoggedInUser(response.username);
         setAccesslevelId(response.accesslevelId);
         setIsPositiveMessage(true);

@@ -27,7 +27,8 @@ import md5 from 'md5'
 }
 */
 
-const UserAdd = ({setAddUser, setIsPositiveMessage, setShowMessage, setMessageText, setShowUsers, reloadUsers, setReloadUsers}) => {
+const UserAdd = ({setAddUser, setIsPositiveMessage, setShowMessage, setMessageText, 
+                setShowUsers, reloadUsers, setReloadUsers, accesslevelId}) => {
 
   // Komponentin tilan määritys
   // const [newUserId, setNewUserId] = useState('');

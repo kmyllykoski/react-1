@@ -28,9 +28,20 @@ const App = () => {
   const [showLogin, setShowLogin] = useState(true)
   const [logoutRequested, setLogoutRequested] = useState(false)
 
-  const huomio = () => {
-    alert("Huomio!")
-  } 
+  // check cookies for existing login
+  const checkLogin = () => {
+    const username = localStorage.getItem("username");
+    const accesslevelId = localStorage.getItem("accesslevelId");
+    console.log('Found login from localStorage:', username, accesslevelId);
+    if (username && accesslevelId) {
+      setLoggedInUser(username);
+      setAccesslevelId(accesslevelId);
+    }
+  };
+
+  React.useEffect(() => {
+    checkLogin();
+  }, []);
 
   // small inline component to perform logout side-effects and show message
   const Logout = () => {
@@ -45,12 +56,10 @@ const App = () => {
       setAccesslevelId(null);
       localStorage.clear();
 
-      // show global logout message
+      // show logout message
       setIsPositiveMessage(true);
       setMessageText('User has successfully logged out.');
       setShowMessage(true);
-      
-      
 
       // hide message and navigate after 3s
       const t = setTimeout(() => {
@@ -118,7 +127,8 @@ const App = () => {
                   {loggedInUser && <h3>Use the menu to view customers, posts and tools.</h3>}
                   {!loggedInUser && showLogin && (
                     <>
-                      <h3>Please log in to access the application features.</h3>
+                      <h3>Please log in to access all the application features.</h3>
+                      <h4>Without logging in you can still use our wonderful Laskuri tool.</h4>
                       <Login
                         setIsPositiveMessage={setIsPositiveMessage}
                         setShowMessage={setShowMessage}
@@ -138,7 +148,7 @@ const App = () => {
           } />
 
           <Route path="/users" element={
-            <UserList setIsPositiveMessage={setIsPositiveMessage} setShowMessage={setShowMessage} setMessageText={setMessageText} />
+            <UserList setIsPositiveMessage={setIsPositiveMessage} setShowMessage={setShowMessage} setMessageText={setMessageText} accesslevelId={accesslevelId} />
           } />
 
           <Route path="/posts" element={
