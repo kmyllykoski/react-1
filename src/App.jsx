@@ -95,15 +95,29 @@ const App = () => {
         <AuthWatcher />
 
         <Routes>
-          <Route path="/" element={
-            <div style={{ padding: '1rem' }}>
-              <h2>Welcome to Northwind Corporation</h2>
-              {loggedInUser && <h3>Use the menu to view customers, posts and tools.</h3>}
-              {!loggedInUser && <h3>Please log in to access the application features.</h3>}
-              {!loggedInUser && showLogin &&  <Login setIsPositiveMessage={setIsPositiveMessage} setShowMessage={setShowMessage} setMessageText={setMessageText}
-            setLoggedInUser={setLoggedInUser} setAccesslevelId={setAccesslevelId} />}
-            </div>
-          } />
+          <Route
+            path="/"
+            element={
+              !logoutRequested ? (
+                <div style={{ padding: '1rem' }}>
+                  <h2>Welcome to Northwind Corporation</h2>
+                  {loggedInUser && <h3>Use the menu to view customers, posts and tools.</h3>}
+                  {!loggedInUser && showLogin && (
+                    <>
+                      <h3>Please log in to access the application features.</h3>
+                      <Login
+                        setIsPositiveMessage={setIsPositiveMessage}
+                        setShowMessage={setShowMessage}
+                        setMessageText={setMessageText}
+                        setLoggedInUser={setLoggedInUser}
+                        setAccesslevelId={setAccesslevelId}
+                      />
+                    </>
+                  )}
+                </div>
+              ) : null
+            }
+          />
 
           <Route path="/customers" element={
             <CustomerList setIsPositiveMessage={setIsPositiveMessage} setShowMessage={setShowMessage} setMessageText={setMessageText} />
