@@ -12,7 +12,7 @@ import { Navbar } from 'react-bootstrap'
 import Nav from 'react-bootstrap/Nav'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes, useNavigate, Link } from 'react-router-dom'
 
 const App = () => {
 
@@ -34,44 +34,33 @@ const App = () => {
 
   // small inline component to perform logout side-effects and show message
   const Logout = () => {
-    // Immediately hide the login UI and clear auth state. AuthWatcher
-    // (rendered inside the Router) will detect this change and perform
-    // the user-visible side-effects (message + redirect) so the UI can
-    // update before those side-effects run.
+    const navigate = useNavigate();
+    if (!logoutRequested) {
+      return null; // do nothing if logout not requested
+    }
+
     React.useEffect(() => {
-      setShowLogin(false);
+      // clear auth immediately
       setLoggedInUser(null);
       setAccesslevelId(null);
-      setLogoutRequested(true);
       localStorage.clear();
-    }, []);
 
-    return null;
-  };
-
-  // Watch for login -> logout transition and show the logout message
-  // then navigate to home. AuthWatcher must be rendered inside Router so
-  // it can use useNavigate.
-  const AuthWatcher = () => {
-    const navigate = useNavigate();
-
-    React.useEffect(() => {
-      if (!logoutRequested) return;
-
+      // show global logout message
       setIsPositiveMessage(true);
-      setMessageText('User logged out successfully.');
+      setMessageText('User has successfully logged out.');
       setShowMessage(true);
+      
 
+      // hide message and navigate after 3s
       const t = setTimeout(() => {
         setShowMessage(false);
-        // make sure the login form is shown on the home page after redirect
-        setShowLogin(true);
-        setLogoutRequested(false);
+        setShowLogin(true); // ensure login form is visible on home
         navigate('/', { replace: true });
-      }, 3200);
+        setLogoutRequested(false); // reset flag
+      }, 3000);
 
       return () => clearTimeout(t);
-    }, [logoutRequested, navigate]);
+    }, [navigate]);
 
     return null;
   };
@@ -87,18 +76,29 @@ const App = () => {
            {loggedInUser && <Nav.Link href="/users">Users</Nav.Link>}
            {loggedInUser && <Nav.Link href="/posts">Posts</Nav.Link>}
            {loggedInUser && <Nav.Link href="/laskuri">Laskuri</Nav.Link>}
-           {loggedInUser && <Nav.Link href="/logout">Logout</Nav.Link>}          
+           {loggedInUser && (
+             <Nav.Link
+               as={Link}
+               to="/logout"
+               onClick={(e) => {
+                 // DO NOT assign logoutRequested = true
+                 setLogoutRequested(true); // correct way to update React state
+               }}
+             >
+               Logout
+             </Nav.Link>
+           )}
           </Nav>
         </Navbar>
 
         {/* AuthWatcher must be inside Router so it can use navigate */}
-        <AuthWatcher />
+        <Logout />
 
         <Routes>
           <Route
             path="/"
             element={
-              !logoutRequested ? (
+              
                 <div style={{ padding: '1rem' }}>
                   <h2>Welcome to Northwind Corporation</h2>
                   {loggedInUser && <h3>Use the menu to view customers, posts and tools.</h3>}
@@ -115,9 +115,9 @@ const App = () => {
                     </>
                   )}
                 </div>
-              ) : null
-            }
-          />
+              }
+            />
+          
 
           <Route path="/customers" element={
             <CustomerList setIsPositiveMessage={setIsPositiveMessage} setShowMessage={setShowMessage} setMessageText={setMessageText} />
