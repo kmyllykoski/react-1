@@ -102,6 +102,7 @@ const UserAdd = ({setAddUser, setIsPositiveMessage, setShowMessage, setMessageTe
   }
 
   if (!isAuthorized) return null;
+  
   return (
     
       <div className='customerFormDiv'>
