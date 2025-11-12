@@ -5,7 +5,7 @@ import User from './User'
 import UserAdd from './UserAdd'
 import UserEdit from './UserEdit'
 
-const UserList = ({ setIsPositiveMessage, setShowMessage, setMessageText }) => {
+const UserList = ({ setIsPositiveMessage, setShowMessage, setMessageText, accesslevelId }) => {
 
 // Komponentin tilan määritys
 const [users, setUsers] = useState([])
@@ -94,7 +94,7 @@ const filteredUsers = (users || []).filter(u => {
 
         {addUser && <UserAdd setAddUser={setAddUser} setIsPositiveMessage={setIsPositiveMessage}
         setShowMessage={setShowMessage} setMessageText={setMessageText} setShowUsers={setShowUsers} 
-        reloadUsers={reloadUsers} setReloadUsers={setReloadUsers} />}
+        reloadUsers={reloadUsers} setReloadUsers={setReloadUsers} accesslevelId={accesslevelId} />}
 
         {editMode && <UserEdit setEditMode={setEditMode} setIsPositiveMessage={setIsPositiveMessage} setShowMessage={setShowMessage}
          setMessageText={setMessageText} userToEdit={userToEdit} reloadUsers={reloadUsers} setReloadUsers={setReloadUsers} 

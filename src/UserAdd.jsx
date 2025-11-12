@@ -1,5 +1,5 @@
 import './App.css'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import AxUsers from './services/AxUsers'
 import md5 from 'md5'
 
@@ -38,6 +38,25 @@ const UserAdd = ({setAddUser, setIsPositiveMessage, setShowMessage, setMessageTe
   const [newUsername, setNewUsername] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [newAccesslevelId, setNewAccesslevelId] = useState(2); // Default access level
+
+  // Check permission on mount — perform side effects in an effect (not during render)
+  useEffect(() => {
+    if (accesslevelId == null) return; // wait until prop is available
+    if (accesslevelId !== 1) {
+      console.log(`User with accesslevelId ${accesslevelId} tried to add a new user without permission.`);
+      if (typeof setIsPositiveMessage === 'function') setIsPositiveMessage(false);
+      if (typeof setMessageText === 'function') setMessageText(`You do not have permission to add new users. Accesslevel is ${accesslevelId}, required is 1.`);
+      if (typeof setShowMessage === 'function') setShowMessage(true);
+
+      const t = setTimeout(() => {
+        if (typeof setShowMessage === 'function') setShowMessage(false);
+        if (typeof setShowUsers === 'function') setShowUsers(true);
+        if (typeof setAddUser === 'function') setAddUser(false);
+      }, 3000);
+
+      return () => clearTimeout(t);
+    }
+  }, [accesslevelId, setIsPositiveMessage, setMessageText, setShowMessage, setShowUsers, setAddUser]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
