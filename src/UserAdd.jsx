@@ -38,20 +38,22 @@ const UserAdd = ({setAddUser, setIsPositiveMessage, setShowMessage, setMessageTe
   const [newUsername, setNewUsername] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [newAccesslevelId, setNewAccesslevelId] = useState(2); // Default access level
+  const [isAuthorized, setIsAuthorized] = useState(true);
 
-  // Check permission on mount — perform side effects in an effect (not during render)
+  // Check permission to add user. AccesslevelId should be 1
   useEffect(() => {
     if (accesslevelId == null) return; // wait until prop is available
     if (accesslevelId !== 1) {
+      setIsAuthorized(false);
       console.log(`User with accesslevelId ${accesslevelId} tried to add a new user without permission.`);
-      if (typeof setIsPositiveMessage === 'function') setIsPositiveMessage(false);
-      if (typeof setMessageText === 'function') setMessageText(`You do not have permission to add new users. Accesslevel is ${accesslevelId}, required is 1.`);
-      if (typeof setShowMessage === 'function') setShowMessage(true);
+      setIsPositiveMessage(false);
+      setMessageText(`You do not have permission to add new users. Accesslevel is ${accesslevelId}, required is 1.`);
+      setShowMessage(true);
 
       const t = setTimeout(() => {
-        if (typeof setShowMessage === 'function') setShowMessage(false);
-        if (typeof setShowUsers === 'function') setShowUsers(true);
-        if (typeof setAddUser === 'function') setAddUser(false);
+        setShowMessage(false);
+        setShowUsers(true);
+        setAddUser(false);
       }, 3000);
 
       return () => clearTimeout(t);
@@ -99,7 +101,9 @@ const UserAdd = ({setAddUser, setIsPositiveMessage, setShowMessage, setMessageTe
       });
   }
 
+  if (!isAuthorized) return null;
   return (
+    
       <div className='customerFormDiv'>
       <h3>Add New User</h3>
 
@@ -162,6 +166,7 @@ const UserAdd = ({setAddUser, setIsPositiveMessage, setShowMessage, setMessageTe
         </div>
       </form>
       </div>
+    
   );
 }
   
