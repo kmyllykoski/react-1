@@ -85,7 +85,7 @@ const App = () => {
 
           {/* left-side nav */}
           <Nav className="me-auto">
-            {loggedInUser && <Nav.Link as={Link} to="/customers">Customers</Nav.Link>}
+            {<Nav.Link as={Link} to="/customers">Customers</Nav.Link>}
             {loggedInUser && <Nav.Link as={Link} to="/users">Users</Nav.Link>}
             {loggedInUser && <Nav.Link as={Link} to="/posts">Posts</Nav.Link>}
             {<Nav.Link as={Link} to="/laskuri">Laskuri</Nav.Link>}
@@ -127,8 +127,9 @@ const App = () => {
                   {loggedInUser && <h3>Use the menu to view customers, posts and tools.</h3>}
                   {!loggedInUser && showLogin && (
                     <>
-                      <h3>Please log in to access all the application features.</h3>
-                      <h4>Without logging in you can still use our wonderful Laskuri tool.</h4>
+                      <h4>Please log in to access all the application features.</h4>
+                      <h5>Without logging in you can still use our wonderful Laskuri tool.</h5>
+                      <h5>For testing, Customers is shown in menu even without login.</h5>
                       <Login
                         setIsPositiveMessage={setIsPositiveMessage}
                         setShowMessage={setShowMessage}
