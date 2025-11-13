@@ -121,13 +121,13 @@ const filteredUsers = (users || []).filter(u => {
         reloadUsers={reloadUsers} setReloadUsers={setReloadUsers} accesslevelId={accesslevelId} />}
 
         {editMode && <UserEdit setEditMode={setEditMode} setIsPositiveMessage={setIsPositiveMessage} setShowMessage={setShowMessage}
-         setMessageText={setMessageText} userToEdit={userToEdit} reloadUsers={reloadUsers} setReloadUsers={setReloadUsers} 
+         setMessageText={setMessageText} userToEdit={userToEdit} setUserToEdit={setUserToEdit} reloadUsers={reloadUsers} setReloadUsers={setReloadUsers} 
          setShowUsers={setShowUsers} />}
 
         
 
         {showUsers && !editMode && !addUser && filteredUsers.length > 0 && (
-          <div className="table-responsive">
+          <div className="table-responsive mb-3">
             <table className="table table-striped table-hover align-middle">
               <thead className="table-light">
                 <tr>
@@ -148,8 +148,14 @@ const filteredUsers = (users || []).filter(u => {
                     <td>{u.email}</td>
                     <td>{u.accesslevelId}</td>
                     <td>
-                      <button className="btn btn-sm btn-primary me-2" onClick={() => editUser(u)}>Edit</button>
-                      <button className="btn btn-sm btn-danger" onClick={() => deleteUser(u.userId)}>Delete</button>
+                      <div className="d-flex gap-2">
+                        <button className="btn btn-sm btn-outline-primary" title="Edit" aria-label={`Edit ${u.firstname} ${u.lastname}`} onClick={() => editUser(u)}>
+                          <i className="bi bi-pencil" aria-hidden="true"></i>
+                        </button>
+                        <button className="btn btn-sm btn-outline-danger" title="Delete" aria-label={`Delete ${u.firstname} ${u.lastname}`} onClick={() => deleteUser(u.userId)}>
+                          <i className="bi bi-trash" aria-hidden="true"></i>
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}

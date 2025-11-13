@@ -27,7 +27,8 @@ import md5 from 'md5'
 }
 */
 
-const UserEdit = ({setIsPositiveMessage, setShowMessage, setMessageText, setShowUsers, setEditMode, userToEdit, reloadUsers, setReloadUsers }) => {
+const UserEdit = ({setIsPositiveMessage, setShowMessage, setMessageText, setShowUsers, setEditMode, 
+                  userToEdit, setUserToEdit, reloadUsers, setReloadUsers }) => {
 
   // Local state for editing user details
   const [newFirstName, setNewFirstName] = useState(userToEdit.firstname);
@@ -41,7 +42,7 @@ const UserEdit = ({setIsPositiveMessage, setShowMessage, setMessageText, setShow
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  // Submit updated user details (not password)
+  // Submit updated user details 
   const handleSubmit = (e) => {
     e.preventDefault();
     const updatedUser = {
@@ -50,7 +51,7 @@ const UserEdit = ({setIsPositiveMessage, setShowMessage, setMessageText, setShow
       lastname: newLastName,
       email: newEmail,
       username: newUsername,
-      password: userToEdit.password,
+      password: userToEdit.password, // keep existing password or hash new one if changed
       accesslevelId: parseInt(newAccesslevelId)
     };
 
@@ -79,7 +80,7 @@ const UserEdit = ({setIsPositiveMessage, setShowMessage, setMessageText, setShow
       });
   };
 
-  // Submit new password only (shows only when changePasswordMode === true)
+  // Submit new password only separately (shows only when changePasswordMode === true)
   const handleSubmitOfNewPassword = (e) => {
     e.preventDefault();
     if (newPassword !== confirmPassword) {
@@ -91,14 +92,15 @@ const UserEdit = ({setIsPositiveMessage, setShowMessage, setMessageText, setShow
     }
 
     const hashed = md5(newPassword);
-    const updatedUser = {
+    const updatedPasswordUser = {
       ...userToEdit,
       password: hashed
     };
+    setUserToEdit(updatedPasswordUser);
 
-    console.log(`Changing password for user ${userToEdit.firstname} ${userToEdit.lastname}`);
+    console.log(`Changing password for user ${updatedPasswordUser.firstname} ${updatedPasswordUser.lastname}`);
 
-    AxUsers.update(updatedUser)
+    AxUsers.update(updatedPasswordUser)
       .then(response => {
         console.log('Password changed:', response);
         setIsPositiveMessage(true);
@@ -107,9 +109,9 @@ const UserEdit = ({setIsPositiveMessage, setShowMessage, setMessageText, setShow
         setTimeout(() => {
           setShowMessage(false);
           setChangePasswordMode(false);
-          setReloadUsers(!reloadUsers);
-          setShowUsers(true);
-          setEditMode(false);
+          // setReloadUsers(!reloadUsers);
+          // setShowUsers(true);
+          // setEditMode(false);
         }, 3000);
       })
       .catch(error => {
@@ -126,91 +128,105 @@ const UserEdit = ({setIsPositiveMessage, setShowMessage, setMessageText, setShow
 
   if (changePasswordMode) {
     return (
-      <div className='customerFormDiv'>
-        <h3>Change Password for {userToEdit.firstname} {userToEdit.lastname}</h3>
-        <form onSubmit={handleSubmitOfNewPassword}>
-          <table className="user-form-table">
+      <div className='customerFormDiv card my-3'>
+        <div className="card-body">
+          <h3 className="card-title">Change Password for {userToEdit.firstname} {userToEdit.lastname}</h3>
+          <form onSubmit={handleSubmitOfNewPassword}>
+            <table className="table table-borderless user-form-table mt-5">
+              <tbody>
+                <tr>
+                  <th><label htmlFor="newPassword">New Password</label></th>
+                  <td>
+                    <input id="newPassword" type="password" className="form-control" value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)} placeholder="New Password" />
+                  </td>
+                </tr>
+                <tr>
+                  <th><label htmlFor="confirmPassword">Confirm Password</label></th>
+                  <td>
+                    <input id="confirmPassword" type="password" className="form-control" value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Confirm Password" />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div className="d-flex gap-2 justify-content-center flex-wrap my-3">
+              <button type="submit" className="btn btn-sm btn-outline-primary" title="Save" aria-label="Save password">
+                <i className="bi bi-check-lg" aria-hidden="true"></i>
+              </button>
+              <button type="button" className="btn btn-sm btn-outline-secondary" title="Cancel" aria-label="Cancel" onClick={() => {setChangePasswordMode(false)}}>
+                <i className="bi bi-x-lg" aria-hidden="true"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className='customerFormDiv card my-3'>
+      <div className="card-body">
+        <h3 className="card-title">Edit User</h3>
+        <form onSubmit={handleSubmit}>
+          <table className="table table-borderless user-form-table mt-3">
             <tbody>
               <tr>
-                <th><label htmlFor="newPassword">New Password</label></th>
+                <th><label htmlFor="newFirstName">First Name</label></th>
                 <td>
-                  <input id="newPassword" type="password" value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)} placeholder="New Password" />
+                  <input id="firstName" type="text" className="form-control" value={newFirstName}
+                    onChange={(e) => setNewFirstName(e.target.value)} placeholder="First Name" />
                 </td>
               </tr>
+
               <tr>
-                <th><label htmlFor="confirmPassword">Confirm Password</label></th>
+                <th><label htmlFor="newLastName">Last Name</label></th>
                 <td>
-                  <input id="confirmPassword" type="password" value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Confirm Password" />
+                  <input id="lastName" type="text" className="form-control" value={newLastName}
+                    onChange={(e) => setNewLastName(e.target.value)} placeholder="Last Name" />
+                </td>
+              </tr>
+
+              <tr>
+                <th><label htmlFor="newEmail">Email</label></th>
+                <td>
+                  <input id="email" type="email" className="form-control" value={newEmail}
+                    onChange={(e) => setNewEmail(e.target.value)} placeholder="Email" />
+                </td>
+              </tr>
+
+              <tr>
+                <th><label htmlFor="newUsername">Username</label></th>
+                <td>
+                  <input id="username" type="text" className="form-control" value={newUsername}
+                    onChange={(e) => setNewUsername(e.target.value)} placeholder="Username" />
+                </td>
+              </tr>
+
+              <tr>
+                <th><label htmlFor="newAccesslevelId">Access Level</label></th>
+                <td>
+                  <input id="accesslevelId" type="number" className="form-control" value={newAccesslevelId}
+                    onChange={(e) => setNewAccesslevelId(e.target.value)} placeholder="Access Level" />
                 </td>
               </tr>
             </tbody>
           </table>
 
           <div className="d-flex gap-2 justify-content-center flex-wrap my-3">
-            <button type="submit" className="btn btn-sm btn-primary me-2">Save</button>
-            <button type="button" className="btn btn-sm btn-secondary" onClick={() => {setChangePasswordMode(false)}}>Cancel</button>
+            <button type="submit" className="btn btn-sm btn-outline-primary" title="Save" aria-label="Save user">
+              <i className="bi bi-check-lg" aria-hidden="true"></i>
+            </button>
+            <button type="button" className="btn btn-sm btn-outline-primary" title="Change password" aria-label="Change password" onClick={() => {setChangePasswordMode(true)}}>
+              Change Password
+            </button>
+            <button type="button" className="btn btn-sm btn-outline-secondary" title="Cancel" aria-label="Cancel edit" onClick={() => {setEditMode(false); setShowUsers(true);}}>
+              <i className="bi bi-x-lg" aria-hidden="true"></i>
+            </button>
           </div>
         </form>
       </div>
-    );
-  }
-
-  return (
-    <div className='customerFormDiv'>
-      <h3>Edit User</h3>
-      <form onSubmit={handleSubmit}>
-        <table className="user-form-table">
-          <tbody>
-            <tr>
-              <th><label htmlFor="newFirstName">First Name</label></th>
-              <td>
-                <input id="firstName" type="text" value={newFirstName}
-                  onChange={(e) => setNewFirstName(e.target.value)} placeholder="First Name" />
-              </td>
-            </tr>
-
-            <tr>
-              <th><label htmlFor="newLastName">Last Name</label></th>
-              <td>
-                <input id="lastName" type="text" value={newLastName}
-                  onChange={(e) => setNewLastName(e.target.value)} placeholder="Last Name" />
-              </td>
-            </tr>
-
-            <tr>
-              <th><label htmlFor="newEmail">Email</label></th>
-              <td>
-                <input id="email" type="email" value={newEmail}
-                  onChange={(e) => setNewEmail(e.target.value)} placeholder="Email" />
-              </td>
-            </tr>
-
-            <tr>
-              <th><label htmlFor="newUsername">Username</label></th>
-              <td>
-                <input id="username" type="text" value={newUsername}
-                  onChange={(e) => setNewUsername(e.target.value)} placeholder="Username" />
-              </td>
-            </tr>
-
-            <tr>
-              <th><label htmlFor="newAccesslevelId">Access Level</label></th>
-              <td>
-                <input id="accesslevelId" type="number" value={newAccesslevelId}
-                  onChange={(e) => setNewAccesslevelId(e.target.value)} placeholder="Access Level" />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div className="d-flex gap-2 justify-content-center flex-wrap my-3">
-          <button type="submit" className="btn btn-sm btn-primary me-2">Save</button>
-          <button type="button" className="btn btn-sm btn-primary me-2" onClick={() => {setChangePasswordMode(true)}}>Change Password</button>
-          <button type="button" className="btn btn-sm btn-secondary" onClick={() => {setEditMode(false); setShowUsers(true);}}>Cancel</button>
-        </div>
-      </form>
     </div>
   );
 }

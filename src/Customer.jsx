@@ -65,42 +65,60 @@ const handleDelete = (customer) => {
     }
 }
 
-  return (
-    <div className='customerDiv'>
-        {detailCustomer !== customer.customerId && <h4 onClick={() => setDetailCustomer(customer.customerId)}>{customer.companyName}</h4>}
+    return (
+        <div className='customerDiv mb-3'>
+                {detailCustomer !== customer.customerId && (
+                    <h4 className="mb-2" style={{cursor: 'pointer'}} onClick={() => setDetailCustomer(customer.customerId)}>{customer.companyName}</h4>
+                )}
 
-        {detailCustomer === customer.customerId && 
-          <div className='customerDetails'>
-            <h3>{customer.companyName}</h3>
-            <div className='buttonRow'>
-            <button className="btn btn-sm btn-danger" onClick={() => handleDelete(customer)}>Delete</button>
-            <button className="btn btn-sm btn-primary" onClick={() => editCustomer(customer)}>Edit</button>
-            <button className="btn btn-sm btn-secondary" onClick={() => setDetailCustomer(null)}>Close</button>
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                    <th>Contact Name</th>
-                    <th>Phone</th>
-                    <th>Address</th>
-                    <th>City</th>
-                    <th>Country</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                    <td>{customer.contactName}</td>
-                    <td>{customer.phone}</td>
-                    <td>{customer.address}</td>
-                    <td>{customer.city}</td>
-                    <td>{customer.country}</td>
-                    </tr>
-                </tbody>
-            </table>
-          </div>
-        }
-    </div>
-  )
+                {detailCustomer === customer.customerId && (
+                    <div className="card">
+                        <div className="card-body">
+                            <div className="d-flex align-items-start">
+                                <div className="flex-grow-1">
+                                    <h5 className="card-title">{customer.companyName}</h5>
+                                </div>
+                            </div>
+
+                            <div className="table-responsive mt-3">
+                                <table className="table table-striped table-sm mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Contact Name</th>
+                                            <th>Phone</th>
+                                            <th>Address</th>
+                                            <th>City</th>
+                                            <th>Country</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{customer.contactName}</td>
+                                            <td>{customer.phone}</td>
+                                            <td>{customer.address}</td>
+                                            <td>{customer.city}</td>
+                                            <td>{customer.country}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div className="d-flex gap-2 justify-content-end mt-3">
+                                <button className="btn btn-sm btn-outline-primary" onClick={() => editCustomer(customer)} title="Edit" aria-label={`Edit ${customer.companyName}`}>
+                                    <i className="bi bi-pencil" aria-hidden="true"></i>
+                                </button>
+                                <button className="btn btn-sm btn-outline-danger" onClick={() => handleDelete(customer)} title="Delete" aria-label={`Delete ${customer.companyName}`}>
+                                    <i className="bi bi-trash" aria-hidden="true"></i>
+                                </button>
+                                <button className="btn btn-sm btn-outline-secondary" onClick={() => setDetailCustomer(null)} title="Close" aria-label="Close details">
+                                    <i className="bi bi-x-lg" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+        </div>
+    )
 }
 
 export default Customer
