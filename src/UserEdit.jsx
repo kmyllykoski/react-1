@@ -94,9 +94,9 @@ const UserEdit = ({setIsPositiveMessage, setShowMessage, setMessageText, setShow
     const hashed = md5(newPassword);
     const updatedPasswordUser = {
       ...userToEdit,
-      password: hashed
+      password: hashed  // otherwise same data as userToEdit but with updated password 
     };
-    setUserToEdit(updatedPasswordUser);
+    setUserToEdit(updatedPasswordUser); // now the userToEdit (that came as props with the old password) has the updated password
 
     console.log(`Changing password for user ${updatedPasswordUser.firstname} ${updatedPasswordUser.lastname}`);
 
@@ -109,7 +109,7 @@ const UserEdit = ({setIsPositiveMessage, setShowMessage, setMessageText, setShow
         setTimeout(() => {
           setShowMessage(false);
           setChangePasswordMode(false);
-          // setReloadUsers(!reloadUsers);
+          // setReloadUsers(!reloadUsers);  // these would take back to user list view
           // setShowUsers(true);
           // setEditMode(false);
         }, 3000);
