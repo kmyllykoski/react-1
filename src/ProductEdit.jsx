@@ -27,7 +27,7 @@ const ProductEdit = ({setEditMode, setIsPositiveMessage, setShowMessage, setMess
     const handleSubmit = (e) => {
         e.preventDefault();
         const updatedProduct = {
-            productId: updatedProductId,  // ProductID is identity column in database, no need to set it here
+            productId: productToEdit.productId,  // ProductID is identity column in database, no need to update it here
             productName: updatedProductName,
             supplierId: 1,  // Default supplierId
             categoryId: 1,  // Default categoryId
@@ -75,23 +75,24 @@ const ProductEdit = ({setEditMode, setIsPositiveMessage, setShowMessage, setMess
     const [updatedUnitsInStock, setUpdatedUnitsInStock] = useState(productToEdit.unitsInStock);
 
     return (
-        <div className='productFormDiv'>
-        <h3>Edit Product</h3>
+        <div className='productFormDiv card my-3'>
+          <div className="card-body">
+            <h3 className="card-title">Edit Product</h3>
 
-        <form onSubmit={handleSubmit}>
-          <table className="product-form-table">
+            <form onSubmit={handleSubmit}>
+              <table className="table table-borderless product-form-table">
             <tbody>
               <tr>
                 <th><label htmlFor="productName">Name</label></th>
                 <td>
-                  <input id="productName" type="text" value={updatedProductName} onChange={(e) => setUpdatedProductName(e.target.value)} />
+                  <input id="productName" type="text" className="form-control" value={updatedProductName} onChange={(e) => setUpdatedProductName(e.target.value)} />
                 </td>
               </tr>
 
               <tr>
                 <th><label htmlFor="QuantityPerUnit">Quantity Per Unit</label></th>
                 <td>
-                  <input id="quantityPerUnit" type="text" value={updatedQuantityPerUnit}
+                  <input id="quantityPerUnit" type="text" className="form-control" value={updatedQuantityPerUnit}
                     onChange={(e) => setUpdatedQuantityPerUnit(e.target.value)} placeholder="Quantity Per Unit" />
                 </td>
               </tr>
@@ -99,7 +100,7 @@ const ProductEdit = ({setEditMode, setIsPositiveMessage, setShowMessage, setMess
               <tr>
                 <th><label htmlFor="unitPrice">Unit Price</label></th>
                 <td>
-                  <input id="unitPrice" type="text" value={updatedUnitPrice}
+                  <input id="unitPrice" type="text" className="form-control" value={updatedUnitPrice}
                     onChange={(e) => setUpdatedUnitPrice(e.target.value)} placeholder="Unit Price" />
                 </td>
               </tr>
@@ -107,18 +108,23 @@ const ProductEdit = ({setEditMode, setIsPositiveMessage, setShowMessage, setMess
               <tr>
                 <th><label htmlFor="unitsInStock">Units In Stock</label></th>
                 <td>
-                  <input id="unitsInStock" type="text" value={updatedUnitsInStock}
+                  <input id="unitsInStock" type="text" className="form-control" value={updatedUnitsInStock}
                     onChange={(e) => setUpdatedUnitsInStock(e.target.value)} placeholder="Units In Stock" />
                 </td>
               </tr>
             </tbody>
-          </table>
+              </table>
 
-          <div className="d-flex gap-2 justify-content-center flex-wrap my-3">
-            <button type="submit" className="btn btn-primary me-2">Save Product</button>
-            <button type="button" className="btn btn-secondary" onClick={() => setEditMode(false)}>Cancel</button>
+              <div className="d-flex gap-2 justify-content-center flex-wrap my-3">
+                <button type="submit" className="btn btn-sm btn-outline-primary" title="Save" aria-label="Save product">
+                  <i className="bi bi-check-lg" aria-hidden="true"></i>
+                </button>
+                <button type="button" className="btn btn-sm btn-outline-secondary" title="Cancel" aria-label="Cancel edit" onClick={() => setEditMode(false)}>
+                  <i className="bi bi-x-lg" aria-hidden="true"></i>
+                </button>
+              </div>
+            </form>
           </div>
-        </form>
         </div>
     )
 }

@@ -65,40 +65,60 @@ const handleDelete = (product) => {
     }
 }
 
-  return (
-    <div className='productDiv'>
-        {detailProduct !== product.productId && <h4 onClick={() => setDetailProduct(product.productId)}>{product.productName}</h4>}
+    return (
+        <div className='productDiv mb-3'>
+            {detailProduct !== product.productId && (
+                <h5 className="mb-2" style={{cursor: 'pointer'}} onClick={() => setDetailProduct(product.productId)}>
+                    {product.productName}
+                </h5>
+            )}
 
-        {detailProduct === product.productId && 
-          <div className='productDetails'>
-            <h3>{product.productName}</h3>
-            <div className='buttonRow'>
-            <button className="btn btn-sm btn-danger" onClick={() => handleDelete(product)}>Delete</button>
-            <button className="btn btn-sm btn-primary" onClick={() => editProduct(product)}>Edit</button>
-            <button className="btn btn-sm btn-secondary" onClick={() => setDetailProduct(null)}>Close</button>
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Product Name</th>
-                        <th>Quantity per unit</th>
-                        <th>Unit price</th>
-                        <th>Units in stock</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{product.productName}</td>
-                        <td>{product.quantityPerUnit}</td>
-                        <td>{product.unitPrice}</td>
-                        <td>{product.unitsInStock}</td>
-                    </tr>
-                </tbody>
-            </table>
-          </div>
-        }
-    </div>
-  )
+            {detailProduct === product.productId && (
+                <div className="card">
+                    <div className="card-body">
+                        <div className="d-flex align-items-start">
+                            <div className="flex-grow-1">
+                                <h4 className="card-title">{product.productName}</h4>
+                            </div>
+                        </div>
+
+                        <div className="table-responsive mt-3">
+                            <table className="table table-striped table-sm mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Product Name</th>
+                                        <th>Quantity per unit</th>
+                                        <th>Unit price</th>
+                                        <th>Units in stock</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{product.productName}</td>
+                                        <td>{product.quantityPerUnit}</td>
+                                        <td>{product.unitPrice}</td>
+                                        <td>{product.unitsInStock}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div className="d-flex gap-2 justify-content-end mt-3">
+                            <button className="btn btn-sm btn-outline-primary" onClick={() => editProduct(product)} title="Edit" aria-label={`Edit ${product.productName}`}>
+                                <i className="bi bi-pencil" aria-hidden="true"></i>
+                            </button>
+                            <button className="btn btn-sm btn-outline-danger" onClick={() => handleDelete(product)} title="Delete" aria-label={`Delete ${product.productName}`}>
+                                <i className="bi bi-trash" aria-hidden="true"></i>
+                            </button>
+                            <button className="btn btn-sm btn-outline-secondary" onClick={() => setDetailProduct(null)} title="Close" aria-label="Close details">
+                                <i className="bi bi-x-lg" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </div>
+    )
 }
 
 export default Product

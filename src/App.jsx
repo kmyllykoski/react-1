@@ -5,6 +5,7 @@ import Viesti from './Viesti'
 import Posts from './Posts'
 import CustomerList from './CustomerList'
 import UserList from './UserList'
+import ProductList from './ProductList'
 import Message from './Message'
 import Login from './Login'
 
@@ -28,14 +29,16 @@ const App = () => {
   const [showLogin, setShowLogin] = useState(true)
   const [logoutRequested, setLogoutRequested] = useState(false)
 
-  // check cookies for existing login
+  // Check localstorage for existing login
   const checkLoginFromLocalStorage = () => {
     const username = localStorage.getItem("username");
     const accesslevelId = localStorage.getItem("accesslevelId");
     console.log('Found login from localStorage:', username, accesslevelId);
-    if (username && accesslevelId) {
+    if (username && accesslevelId != null) {
       setLoggedInUser(username);
-      setAccesslevelId(accesslevelId);
+      // localStorage stores strings — convert to number when restoring state
+      const asNumber = Number(accesslevelId);
+      setAccesslevelId(Number.isNaN(asNumber) ? accesslevelId : asNumber);
     }
   };
 
@@ -87,6 +90,7 @@ const App = () => {
           <Nav className="me-auto">
             {<Nav.Link as={Link} to="/customers">Customers</Nav.Link>}
             {loggedInUser && <Nav.Link as={Link} to="/users">Users</Nav.Link>}
+            {loggedInUser && <Nav.Link as={Link} to="/products">Products</Nav.Link>}
             {loggedInUser && <Nav.Link as={Link} to="/posts">Posts</Nav.Link>}
             {<Nav.Link as={Link} to="/laskuri">Laskuri</Nav.Link>}
           </Nav>
@@ -151,6 +155,11 @@ const App = () => {
           <Route path="/users" element={
             <UserList setIsPositiveMessage={setIsPositiveMessage} setShowMessage={setShowMessage} setMessageText={setMessageText} accesslevelId={accesslevelId} />
           } />
+
+          <Route path="/products" element={
+            <ProductList setIsPositiveMessage={setIsPositiveMessage} setShowMessage={setShowMessage} setMessageText={setMessageText} accesslevelId={accesslevelId} />
+          } />
+
 
           <Route path="/posts" element={
             <Posts info="Selected social media posts from Northwind customers." />

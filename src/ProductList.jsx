@@ -46,7 +46,7 @@ const filteredProducts = (products || []).filter(p => {
   return (
     <>
         <h4>
-          Products from MSSQLExpress with Axios
+          Northwind Products 
           <span className='product-count'> (Count: {filteredProducts.length})</span>
         </h4>
         

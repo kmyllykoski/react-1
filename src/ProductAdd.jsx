@@ -76,16 +76,17 @@ const ProductAdd = ({setAddProduct, setIsPositiveMessage, setShowMessage, setMes
     const [newUnitsInStock, setNewUnitsInStock] = useState('');
     
     return (
-        <div className='productFormDiv'>
-        <h3>Add New Product</h3>
+        <div className='productFormDiv card my-3'>
+          <div className="card-body">
+            <h3 className="card-title">Add New Product</h3>
 
-        <form onSubmit={handleSubmit}>
-          <table className="product-form-table">
+            <form onSubmit={handleSubmit}>
+              <table className="table table-borderless product-form-table">
             <tbody>
               <tr>
-                <th><label htmlFor="productName">ID</label></th>
+                <th><label htmlFor="productName">Product name</label></th>
                 <td>
-                  <input id="productName" type="text" value={newProductName}
+                  <input id="productName" type="text" className="form-control" value={newProductName}
                     onChange={(e) => setNewProductName(e.target.value)}
                     placeholder="Product name" />
                 </td>
@@ -94,7 +95,7 @@ const ProductAdd = ({setAddProduct, setIsPositiveMessage, setShowMessage, setMes
               <tr>
                 <th><label htmlFor="quantityPerUnit">Quantity Per Unit</label></th>
                 <td>
-                  <input id="quantityPerUnit" type="text" value={newQuantityPerUnit}
+                  <input id="quantityPerUnit" type="text" className="form-control" value={newQuantityPerUnit}
                     onChange={(e) => setNewQuantityPerUnit(e.target.value)} placeholder="Quantity Per Unit" />
                 </td>
               </tr>
@@ -102,7 +103,7 @@ const ProductAdd = ({setAddProduct, setIsPositiveMessage, setShowMessage, setMes
               <tr>
                 <th><label htmlFor="unitPrice">Unit Price</label></th>
                 <td>
-                  <input id="unitPrice" type="text" value={newUnitPrice}
+                  <input id="unitPrice" type="text" className="form-control" value={newUnitPrice}
                     onChange={(e) => setNewUnitPrice(e.target.value)} placeholder="Unit Price" />
                 </td>
               </tr>
@@ -110,18 +111,23 @@ const ProductAdd = ({setAddProduct, setIsPositiveMessage, setShowMessage, setMes
               <tr>
                 <th><label htmlFor="unitsInStock">Units In Stock</label></th>
                 <td>
-                  <input id="unitsInStock" type="text" value={newUnitsInStock}
+                  <input id="unitsInStock" type="text" className="form-control" value={newUnitsInStock}
                     onChange={(e) => setNewUnitsInStock(e.target.value)} placeholder="Units In Stock" />
                 </td>
               </tr>
             </tbody>
-          </table>
+              </table>
 
-          <div className="d-flex gap-2 justify-content-center flex-wrap my-3">
-            <button type="submit" className="btn btn-primary me-2">Add Product</button>
-            <button type="button" className="btn btn-secondary" onClick={() => {setAddProduct(false); setDetailProduct(null); setShowProducts(true);}}>Cancel</button>
+              <div className="d-flex gap-2 justify-content-center flex-wrap my-3">
+                <button type="submit" className="btn btn-sm btn-outline-success" title="Add product" aria-label="Add product">
+                  <i className="bi bi-plus-lg" aria-hidden="true"></i>
+                </button>
+                <button type="button" className="btn btn-sm btn-outline-secondary" title="Cancel" aria-label="Cancel" onClick={() => {setAddProduct(false); setDetailProduct(null); setShowProducts(true);}}>
+                  <i className="bi bi-x-lg" aria-hidden="true"></i>
+                </button>
+              </div>
+            </form>
           </div>
-        </form>
         </div>
     )
 }
