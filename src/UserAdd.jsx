@@ -41,7 +41,9 @@ const UserAdd = ({setAddUser, setIsPositiveMessage, setShowMessage, setMessageTe
   const [newAccesslevelId, setNewAccesslevelId] = useState(2); // Default access level
   const [isAuthorized, setIsAuthorized] = useState(true);
 
-  // Check permission to add user. AccesslevelId should be 1
+  // Check permission to add users. AccesslevelId should be 1 to have access.
+  // This check is not needed since accessing the UserAdd component is already restricted in UserList
+  // but kept here for future reference if more refined control is needed.
   useEffect(() => {
     if (accesslevelId == null) return; // wait until prop is available
     if (accesslevelId !== 1) {

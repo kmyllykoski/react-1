@@ -19,7 +19,8 @@ const [reloadUsers, setReloadUsers] = useState(false)
 const [search, setSearch] = useState("")
 const [isAuthorized, setIsAuthorized] = useState(false);
 
-// Check permission to view users. AccesslevelId should be 1 to have permission
+// Check permission to view users. AccesslevelId should be 1 to have permission.
+// UserAdd.jsx has similar check for adding users if more refined control is needed.
   const location = useLocation();
   useEffect(() => {
     if (accesslevelId == null) return; // wait until prop is available
