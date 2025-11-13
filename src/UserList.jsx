@@ -1,5 +1,6 @@
 import './App.css'
 import React, {useState, useEffect} from 'react'
+import { useLocation } from 'react-router-dom'
 import AxUsers from './services/AxUsers'
 import User from './User'
 import UserAdd from './UserAdd'
@@ -16,6 +17,29 @@ const [userToEdit, setUserToEdit] = useState(null)
 const [reloadUsers, setReloadUsers] = useState(false)
 // const [detailUser, setDetailUser] = useState(null)
 const [search, setSearch] = useState("")
+const [isAuthorized, setIsAuthorized] = useState(false);
+
+// Check permission to view users. AccesslevelId should be 1 to have permission
+  const location = useLocation();
+  useEffect(() => {
+    if (accesslevelId == null) return; // wait until prop is available
+    if (accesslevelId !== 1) {
+      setIsAuthorized(false);
+      console.log(`User with accesslevelId ${accesslevelId} tried to view users without permission.`);
+      setIsPositiveMessage(false);
+      setMessageText(`You do not have permission to view users. Your accesslevel is ${accesslevelId}, required is 1.`);
+      setShowMessage(true);
+
+      const t = setTimeout(() => {
+        setShowMessage(false);
+      }, 3000);
+
+      return () => clearTimeout(t);
+    }
+    else {
+      setIsAuthorized(true);
+    }
+  }, [accesslevelId, location.key, setIsPositiveMessage, setMessageText, setShowMessage, setShowUsers, setAddUser]);
 
 useEffect(() => {
   AxUsers.getUsers()
@@ -58,7 +82,7 @@ const filteredUsers = (users || []).filter(u => {
   const q = (search || '').trim().toLowerCase();
   return q === '' || lastname.includes(q);
 });
-
+  if (!isAuthorized) return null;
   return (
     <>
         {!addUser && !editMode &&

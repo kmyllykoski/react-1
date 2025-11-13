@@ -37,6 +37,7 @@ const UserAdd = ({setAddUser, setIsPositiveMessage, setShowMessage, setMessageTe
   const [newEmail, setNewEmail] = useState('');
   const [newUsername, setNewUsername] = useState('');
   const [newPassword, setNewPassword] = useState('');
+  const [newPasswordConfirm, setNewPasswordConfirm] = useState('');
   const [newAccesslevelId, setNewAccesslevelId] = useState(2); // Default access level
   const [isAuthorized, setIsAuthorized] = useState(true);
 
@@ -59,6 +60,22 @@ const UserAdd = ({setAddUser, setIsPositiveMessage, setShowMessage, setMessageTe
       return () => clearTimeout(t);
     }
   }, [accesslevelId, setIsPositiveMessage, setMessageText, setShowMessage, setShowUsers, setAddUser]);
+
+  // Validate that Password and Confirm Password match
+  useEffect(() => {   
+    if (!newPasswordConfirm) return;  // Wait until user types something in Confirm Password
+    const confirmLenght = newPasswordConfirm.length;
+    const passwordStart = newPassword.substring(0, confirmLenght);
+    if (passwordStart !== newPasswordConfirm) {
+      setIsPositiveMessage(false);
+      setMessageText("Password and Confirm Password do not match.");
+      setShowMessage(true);
+    } else {
+      setIsPositiveMessage(true);
+      setMessageText("Password and Confirm Password match.");
+      setShowMessage(true);
+    }
+  }, [newPassword, newPasswordConfirm, setIsPositiveMessage, setMessageText, setShowMessage]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -102,7 +119,7 @@ const UserAdd = ({setAddUser, setIsPositiveMessage, setShowMessage, setMessageTe
   }
 
   if (!isAuthorized) return null;
-  
+
   return (
     
       <div className='customerFormDiv'>
@@ -148,6 +165,14 @@ const UserAdd = ({setAddUser, setIsPositiveMessage, setShowMessage, setMessageTe
               <td>
                 <input id="password" type="password" value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)} placeholder="Password" />
+              </td>
+            </tr>
+
+            <tr>
+              <th><label htmlFor="newPasswordConfirm">Confirm Password</label></th>
+              <td>
+                <input id="passwordConfirm" type="password" value={newPasswordConfirm}
+                  onChange={(e) => setNewPasswordConfirm(e.target.value)} placeholder="Confirm Password" />
               </td>
             </tr>
 
