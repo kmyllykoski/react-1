@@ -103,6 +103,10 @@ const App = () => {
   const LocationWatcher = () => {
     const location = useLocation();
     useEffect(() => {
+      // If logout flow is in progress, don't clear messages here — Logout 
+      // navigates to root and this would invoke LocationWatcher and this would cause problems.
+      if (logoutRequested) return;
+
       // On navigation: if a message exists, hide it when the user has
       // actually navigated away from the route that created the message.
       if (!showMessage) return;
