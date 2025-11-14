@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import './App.css'
 import Laskuri from './Laskuri'
 import Viesti from './Viesti'
@@ -13,7 +13,7 @@ import { Navbar } from 'react-bootstrap'
 import Nav from 'react-bootstrap/Nav'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-import { BrowserRouter as Router, Route, Routes, useNavigate, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes, useNavigate, Link, useLocation } from 'react-router-dom'
 
 const App = () => {
 
@@ -28,6 +28,26 @@ const App = () => {
   const [accesslevelId, setAccesslevelId] = useState(null)
   const [showLogin, setShowLogin] = useState(true)
   const [logoutRequested, setLogoutRequested] = useState(false)
+  const messageTimerRef = useRef(null);
+  const messageOriginRef = useRef(null);
+
+  // Central helper to show a temporary message. Accepts optional originPath
+  // so LocationWatcher can allow the message to persist while on that path.
+  const showTemporaryMessage = (text, isPositive = true, duration = 3000, originPath = null) => {
+    if (messageTimerRef.current) {
+      clearTimeout(messageTimerRef.current);
+      messageTimerRef.current = null;
+    }
+    messageOriginRef.current = originPath;
+    setIsPositiveMessage(isPositive);
+    setMessageText(text);
+    setShowMessage(true);
+    messageTimerRef.current = setTimeout(() => {
+      setShowMessage(false);
+      messageTimerRef.current = null;
+      messageOriginRef.current = null;
+    }, duration);
+  };
 
   // Check localstorage for existing login
   const checkLoginFromLocalStorage = () => {
@@ -79,6 +99,36 @@ const App = () => {
     return null;
   };
 
+  // LocationWatcher runs inside the Router so useLocation is valid there.
+  const LocationWatcher = () => {
+    const location = useLocation();
+    useEffect(() => {
+      // On navigation: if a message exists, hide it when the user has
+      // actually navigated away from the route that created the message.
+      if (!showMessage) return;
+      const origin = messageOriginRef.current;
+      if (origin == null) {
+        // no origin (message not centrally managed) — hide immediately
+        setShowMessage(false);
+        if (messageTimerRef.current) {
+          clearTimeout(messageTimerRef.current);
+          messageTimerRef.current = null;
+        }
+      } else {
+        // hide only when navigating away from the origin path
+        if (location.pathname !== origin) {
+          setShowMessage(false);
+          if (messageTimerRef.current) {
+            clearTimeout(messageTimerRef.current);
+            messageTimerRef.current = null;
+          }
+          messageOriginRef.current = null;
+        }
+      }
+    }, [location.pathname]);
+    return null;
+  };
+
   return (
     <div className="App">
 
@@ -120,6 +170,7 @@ const App = () => {
 
         {/* Logout must be inside Router so it can use navigate */}
         <Logout />
+        <LocationWatcher />
 
         <Routes>
           <Route
@@ -153,7 +204,7 @@ const App = () => {
           } />
 
           <Route path="/users" element={
-            <UserList setIsPositiveMessage={setIsPositiveMessage} setShowMessage={setShowMessage} setMessageText={setMessageText} accesslevelId={accesslevelId} />
+            <UserList setIsPositiveMessage={setIsPositiveMessage} setShowMessage={setShowMessage} setMessageText={setMessageText} accesslevelId={accesslevelId} showTemporaryMessage={showTemporaryMessage} />
           } />
 
           <Route path="/products" element={

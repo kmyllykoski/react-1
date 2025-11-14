@@ -6,7 +6,7 @@ import User from './User'
 import UserAdd from './UserAdd'
 import UserEdit from './UserEdit'
 
-const UserList = ({ setIsPositiveMessage, setShowMessage, setMessageText, accesslevelId }) => {
+const UserList = ({ setIsPositiveMessage, setShowMessage, setMessageText, accesslevelId, showTemporaryMessage }) => {
 
 // Komponentin tilan määritys
 const [users, setUsers] = useState([])
@@ -27,15 +27,21 @@ const [isAuthorized, setIsAuthorized] = useState(false);
     if (accesslevelId !== 1) {
       setIsAuthorized(false);
       console.log(`User with accesslevelId ${accesslevelId} tried to view users without permission.`);
-      setIsPositiveMessage(false);
-      setMessageText(`You do not have permission to view users. Your accesslevel is ${accesslevelId}, required is 1.`);
-      setShowMessage(true);
-
-      const t = setTimeout(() => {
-        setShowMessage(false);
-      }, 3000);
-
-      return () => clearTimeout(t);
+      const text = `You do not have permission to view users. Your accesslevel is ${accesslevelId}, required is 1.`;
+      if (typeof showTemporaryMessage === 'function') {
+        // pass the origin path so the message will persist while the user
+        // remains on this route but will be cleared immediately if they
+        // navigate away before the timeout expires.
+        showTemporaryMessage(text, false, 3000, location.pathname);
+      } else {
+        setIsPositiveMessage(false);
+        setMessageText(text);
+        setShowMessage(true);
+        const t = setTimeout(() => {
+          setShowMessage(false);
+        }, 3000);
+        return () => clearTimeout(t);
+      }
     }
     else {
       setIsAuthorized(true);
