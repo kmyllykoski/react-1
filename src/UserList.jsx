@@ -94,7 +94,7 @@ const filteredUsers = (users || []).filter(u => {
     <>
         {!addUser && !editMode &&
         <h4>
-          Users from MSSQLExpress with Axios
+          Users
           <span className='user-count'> (Count: {filteredUsers.length})</span>
         </h4>
         }
