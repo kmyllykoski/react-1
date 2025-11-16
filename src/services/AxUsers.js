@@ -2,6 +2,8 @@ import instance from './aXInstance';
 
 export const getUsers = async () => {
   const response = await instance.get("/Users");
+  console.log('1. Axios Get Users response data:', response.data);
+  console.log('2. Axios Get Users request headers:', response.config.headers);
   return response.data;
 };
 

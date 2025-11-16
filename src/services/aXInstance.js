@@ -12,6 +12,7 @@ instance.interceptors.request.use((config) => {
   if (token) {
     config.headers = config.headers || {};
     config.headers.Authorization = `Bearer ${token}`;
+    console.log(`Attached token to request headers ${config.headers.Authorization}`);
   }
   return config;
 });
