@@ -1,8 +1,4 @@
-import axios from "axios";
-
-const instance = axios.create({
-  baseURL: "https://localhost:7104/api",
-});
+import instance from './aXInstance';
 
 export const getUsers = async () => {
   const response = await instance.get("/Users");

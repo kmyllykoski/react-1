@@ -1,8 +1,4 @@
-import axios from "axios";
-
-const instance = axios.create({
-  baseURL: "https://localhost:7104/api",
-});
+import instance from './aXInstance';
 
 const authenticate = async (credentials) => {
   const response = await instance.post("/Authentication", credentials);
