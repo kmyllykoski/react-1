@@ -3,6 +3,7 @@ import axios from 'axios';
 // Base URL is taken from Vite env var `VITE_API_BASE_URL` when available,
 // otherwise falls back to the local development URL.
 const baseURL = import.meta.env.VITE_API_BASE_URL || 'https://localhost:7104/api';
+console.log(`AxInstance baseURL: ${baseURL}`);
 
 const instance = axios.create({ baseURL });
 
