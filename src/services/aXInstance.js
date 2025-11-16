@@ -1,10 +1,31 @@
 import axios from 'axios';
 
-// runtime override -> Vite env -> fallback
+// runtime/build/dev defaults
 const runtimeBase = window.__APP_ENV__?.VITE_API_BASE_URL;
-const baseURL = runtimeBase || import.meta.env.VITE_API_BASE_URL || 'https://localhost:7104/api';
+const buildBase   = import.meta.env.VITE_API_BASE_URL;
+const devDefault  = 'https://localhost:7104/api';
 
-console.log('AxInstance baseURL:', baseURL);
+// run detection explicitly
+const isDev = Boolean(import.meta.env.DEV);
+const isLocalHost = (() => {
+  const h = window.location.hostname;
+  console.log('Current hostname:', h);
+  return h === 'localhost' || h === '127.0.0.1' || h === '';
+})();
+
+// now resolve clearly: prefer local/dev when running locally/dev -> runtime override -> build-time value -> final fallback
+let baseURL;
+if (isDev || isLocalHost) {
+  baseURL = devDefault;
+} else if (runtimeBase) {
+  baseURL = runtimeBase;
+} else if (buildBase) {
+  baseURL = buildBase;
+} else {
+  baseURL = 'https://localhost:7104/api';
+}
+
+console.log('AxInstance baseURL resolved to:', baseURL);
 
 const instance = axios.create({ baseURL });
 
