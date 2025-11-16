@@ -2,6 +2,7 @@ import instance from './aXInstance';
 
 export const getProducts = async () => {
   const response = await instance.get("/Products");
+  console.log('Axios baseURL in Products:', instance.defaults.baseURL);
   return response.data;
 };
 
