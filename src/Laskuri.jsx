@@ -7,7 +7,7 @@ const Laskuri = () => {
 // Komponentin tilan määritys
 const [luku, setLuku] = useState(0)
 
-// 
+// return JSX
 
   return (
     <>
