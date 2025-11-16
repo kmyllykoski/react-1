@@ -7,6 +7,8 @@ const Laskuri = () => {
 // Komponentin tilan määritys
 const [luku, setLuku] = useState(0)
 
+// JSX-palautusarvo
+
   return (
     <>
         <h4 className="mb-3 text-center">{luku}</h4>
