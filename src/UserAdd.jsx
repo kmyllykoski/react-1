@@ -1,5 +1,6 @@
 import './App.css'
 import React, { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import AxUsers from './services/AxUsers'
 import md5 from 'md5'
 
@@ -28,7 +29,9 @@ import md5 from 'md5'
 */
 
 const UserAdd = ({setAddUser, setIsPositiveMessage, setShowMessage, setMessageText, 
-                setShowUsers, reloadUsers, setReloadUsers, accesslevelId}) => {
+                setShowUsers, reloadUsers, setReloadUsers, accesslevelId, showTemporaryMessage}) => {
+
+  const location = useLocation();
 
   // Komponentin tilan määritys
   // const [newUserId, setNewUserId] = useState('');
@@ -65,19 +68,43 @@ const UserAdd = ({setAddUser, setIsPositiveMessage, setShowMessage, setMessageTe
 
   // Validate that Password and Confirm Password match
   useEffect(() => {   
-    if (!newPasswordConfirm) return;  // Wait until user types something in Confirm Password
-    const confirmLenght = newPasswordConfirm.length;
-    const passwordStart = newPassword.substring(0, confirmLenght);
-    if (passwordStart !== newPasswordConfirm) {
-      setIsPositiveMessage(false);
-      setMessageText("Password and Confirm Password do not match.");
-      setShowMessage(true);
-    } else {
-      setIsPositiveMessage(true);
-      setMessageText("Password and Confirm Password match.");
-      setShowMessage(true);
+    const textMismatch = 'Password and Confirm Password do not match.';
+    const textMatch = 'Password and Confirm Password match.';
+    const textPrompt = 'Please type Confirm Password to validate.';
+
+    // If the user hasn't typed anything into Confirm Password yet,
+    // show a persistent prompt asking them to confirm the password.
+    if (!newPasswordConfirm) {
+      if (typeof showTemporaryMessage === 'function') {
+        showTemporaryMessage(textPrompt, false, 0, location.pathname);
+      } else {
+        setIsPositiveMessage(false);
+        setMessageText(textPrompt);
+        setShowMessage(true);
+      }
+      return;
     }
-  }, [newPassword, newPasswordConfirm, setIsPositiveMessage, setMessageText, setShowMessage]);
+
+    const confirmLength = newPasswordConfirm.length;
+    const passwordStart = newPassword.substring(0, confirmLength);
+    if (passwordStart !== newPasswordConfirm) {
+      if (typeof showTemporaryMessage === 'function') {
+        showTemporaryMessage(textMismatch, false, 0, location.pathname);
+      } else {
+        setIsPositiveMessage(false);
+        setMessageText(textMismatch);
+        setShowMessage(true);
+      }
+    } else {
+      if (typeof showTemporaryMessage === 'function') {
+        showTemporaryMessage(textMatch, true, 0, location.pathname);
+      } else {
+        setIsPositiveMessage(true);
+        setMessageText(textMatch);
+        setShowMessage(true);
+      }
+    }
+  }, [newPassword, newPasswordConfirm, setIsPositiveMessage, setMessageText, setShowMessage, showTemporaryMessage, location]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -190,7 +217,7 @@ const UserAdd = ({setAddUser, setIsPositiveMessage, setShowMessage, setMessageTe
 
         <div className="d-flex gap-2 justify-content-center flex-wrap my-3">
           <button type="submit" className="btn btn-primary me-2">Save</button>
-          <button type="button" className="btn btn-secondary" onClick={() => {setAddUser(false); setShowUsers(true);}}>Cancel</button>
+          <button type="button" className="btn btn-secondary" onClick={() => {setShowMessage(false); setAddUser(false); setShowUsers(true);}}>Cancel</button>
         </div>
       </form>
       </div>

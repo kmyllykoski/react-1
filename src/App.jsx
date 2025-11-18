@@ -38,15 +38,24 @@ const App = () => {
       clearTimeout(messageTimerRef.current);
       messageTimerRef.current = null;
     }
+    // record origin so LocationWatcher can decide whether to clear on navigation
     messageOriginRef.current = originPath;
     setIsPositiveMessage(isPositive);
     setMessageText(text);
     setShowMessage(true);
-    messageTimerRef.current = setTimeout(() => {
-      setShowMessage(false);
+
+    // duration <= 0 means 'persistent' (no auto-hide) until navigation or explicit clear
+    if (duration > 0) {
+      messageTimerRef.current = setTimeout(() => {
+        setShowMessage(false);
+        messageTimerRef.current = null;
+        messageOriginRef.current = null;
+      }, duration);
+    } else {
+      // persistent: do not set timer, leave messageOriginRef so LocationWatcher
+      // will only clear it when navigating away from originPath.
       messageTimerRef.current = null;
-      messageOriginRef.current = null;
-    }, duration);
+    }
   };
 
   // Check localstorage for existing login

@@ -125,7 +125,7 @@ const filteredUsers = (users || []).filter(u => {
 
         {addUser && <UserAdd setAddUser={setAddUser} setIsPositiveMessage={setIsPositiveMessage}
         setShowMessage={setShowMessage} setMessageText={setMessageText} setShowUsers={setShowUsers} 
-        reloadUsers={reloadUsers} setReloadUsers={setReloadUsers} accesslevelId={accesslevelId} />}
+        reloadUsers={reloadUsers} setReloadUsers={setReloadUsers} accesslevelId={accesslevelId} showTemporaryMessage={showTemporaryMessage} />}
 
         {editMode && <UserEdit setEditMode={setEditMode} setIsPositiveMessage={setIsPositiveMessage} setShowMessage={setShowMessage}
          setMessageText={setMessageText} userToEdit={userToEdit} setUserToEdit={setUserToEdit} reloadUsers={reloadUsers} setReloadUsers={setReloadUsers} 
