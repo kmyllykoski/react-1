@@ -1,4 +1,4 @@
-import instance from './AxInstance_temp';
+import instance from './AxInstance';
 
 export const getProducts = async () => {
   const response = await instance.get("/Products");

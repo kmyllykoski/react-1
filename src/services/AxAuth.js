@@ -1,4 +1,4 @@
-import instance from './AxInstance_temp';
+import instance from './AxInstance';
 
 const authenticate = async (credentials) => {
   const response = await instance.post("/Authentication", credentials);
