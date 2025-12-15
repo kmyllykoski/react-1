@@ -1,5 +1,5 @@
 import instance from './AxInstance';
-
+// mod 
 export const getUsers = async () => {
   const response = await instance.get("/Users");
   console.log('1. Axios Get Users response data:', response.data);
