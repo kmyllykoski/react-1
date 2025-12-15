@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { act } from 'react-dom/test-utils'
+import { act } from 'react'
 import { screen } from '@testing-library/dom'
 import Message from '../Message.jsx'
 
